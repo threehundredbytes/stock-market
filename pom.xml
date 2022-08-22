@@ -33,4 +33,8 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<modules>
+		<module>stock-service</module>
+	</modules>
 </project>
