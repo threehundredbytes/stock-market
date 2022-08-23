@@ -1,11 +1,10 @@
 package ru.dreadblade.stockmarket.stockservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.dreadblade.stockmarket.stockservice.domain.Stock;
-import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.stockservice.dto.StockRequestDTO;
+import ru.dreadblade.stockmarket.stockservice.service.StockService;
 
 import java.util.List;
 
@@ -14,10 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockController {
 
-    private final StockRepository stockRepository;
+    private final StockService stockService;
 
-    @GetMapping("/latest")
-    public List<Stock> findAllLatestStock() {
-        return stockRepository.findLatestStock();
+    @GetMapping
+    public List<Stock> findAll() {
+        return stockService.findAll();
+    }
+
+    @PostMapping
+    public Stock addStock(@RequestBody StockRequestDTO stockRequestDTO) {
+        return stockService.addStock(stockRequestDTO);
     }
 }

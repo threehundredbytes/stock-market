@@ -36,5 +36,6 @@
 
 	<modules>
 		<module>stock-service</module>
+		<module>stock-price-service</module>
 	</modules>
 </project>

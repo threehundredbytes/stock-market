@@ -1,11 +1,8 @@
 package ru.dreadblade.stockmarket.stockservice.domain;
 
 import lombok.*;
-import ru.dreadblade.stockmarket.stockservice.domain.key.StockCompositeKey;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 
@@ -15,15 +12,19 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@IdClass(StockCompositeKey.class)
 public class Stock {
     @Id
-    private String code;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stock_id_sequence")
+    @SequenceGenerator(name = "stock_id_sequence", allocationSize = 1)
+    private Long id;
 
-    @Id
+    private String name;
+    private String code;
+    private BigDecimal price;
+
     @Builder.Default
     private Instant createdAt = Instant.now();
 
-    private String name;
-    private BigDecimal price;
+    @Builder.Default
+    private Instant updatedAt = Instant.now();
 }

@@ -3,8 +3,8 @@ package ru.dreadblade.stockmarket.stockservice.task.startup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.stereotype.Component;
-import ru.dreadblade.stockmarket.stockservice.domain.Stock;
-import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.stockservice.dto.StockRequestDTO;
+import ru.dreadblade.stockmarket.stockservice.service.StockService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BootstrapStockDataStartupTask implements StartupTask {
 
-    private final StockRepository stockRepository;
+    private final StockService stockService;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -23,68 +23,19 @@ public class BootstrapStockDataStartupTask implements StartupTask {
 
     @Override
     public void run() {
-        List<Stock> stockList = new ArrayList<>();
+        List<StockRequestDTO> stockList = new ArrayList<>();
 
-        stockList.add(Stock.builder()
-                .code("MECH")
-                .name("Mechanical engineering INC")
-                .price(new BigDecimal("120"))
-                .build());
+        stockList.add(new StockRequestDTO("MECH", "Mechanical engineering INC", new BigDecimal("120")));
+        stockList.add(new StockRequestDTO("VOLT", "Electronic industry INC", new BigDecimal("110")));
+        stockList.add(new StockRequestDTO("ABC", "Alphabet INC", new BigDecimal("20")));
+        stockList.add(new StockRequestDTO("BTEC", "Blockchain technologies LTD", new BigDecimal("65")));
+        stockList.add(new StockRequestDTO("MILK", "Dairy productions INC", new BigDecimal("75")));
+        stockList.add(new StockRequestDTO("FIRE", "Finance research LT", new BigDecimal("50")));
+        stockList.add(new StockRequestDTO("AGCU", "Agricultural Productions INC", new BigDecimal("70")));
+        stockList.add(new StockRequestDTO("MEAT", "Butcher meat productions INC", new BigDecimal("80")));
+        stockList.add(new StockRequestDTO("SOSC", "Social science INC", new BigDecimal("35")));
+        stockList.add(new StockRequestDTO("FERT", "Fertilizer productions INC", new BigDecimal("95")));
 
-        stockList.add(Stock.builder()
-                .code("VOLT")
-                .name("Electronic industry INC")
-                .price(new BigDecimal("110"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("ABC")
-                .name("Alphabet INC")
-                .price(new BigDecimal("20"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("BTEC")
-                .name("Blockchain technologies LTD")
-                .price(new BigDecimal("65"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("MILK")
-                .name("Dairy productions INC")
-                .price(new BigDecimal("75"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("FIRE")
-                .name("Finance research LTD")
-                .price(new BigDecimal("50"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("AGCU")
-                .name("Agricultural Productions INC")
-                .price(new BigDecimal("70"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("MEAT")
-                .name("Butcher meat productions INC")
-                .price(new BigDecimal("80"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("SOSC")
-                .name("Social science INC")
-                .price(new BigDecimal("35"))
-                .build());
-
-        stockList.add(Stock.builder()
-                .code("FERT")
-                .name("Fertilizer productions INC")
-                .price(new BigDecimal("95"))
-                .build());
-
-        stockRepository.saveAll(stockList);
+        stockList.forEach(stockService::addStock);
     }
 }

@@ -1,24 +1,29 @@
-package ru.dreadblade.stockmarket.stockservice.task.scheduled;
+package ru.dreadblade.stockmarket.stockpriceservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
+import org.springframework.stereotype.Service;
+import ru.dreadblade.stockmarket.stockpriceservice.event.StockPriceChangeIntegrationEvent;
+import ru.dreadblade.stockmarket.stockpriceservice.event.bus.EventBus;
+import ru.dreadblade.stockmarket.stockpriceservice.repository.StockRepository;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class UpdateStockPriceScheduledTask implements ScheduledTask {
-
+@Slf4j
+public class StockPriceService {
     private final StockRepository stockRepository;
+    private final EventBus eventBus;
 
-    @Override
-    @Scheduled(fixedRate = 2500L, initialDelay = 1000L)
-    public void run() {
-        stockRepository.findLatestStock().stream()
+    @Scheduled(fixedRate = 2000L)
+    public void changeStockPrices() {
+        log.trace("Changing stock prices");
+
+        stockRepository.findAll().stream()
                 .peek(stock -> {
                     if (RandomUtils.nextInt(0, 100) <= 42) {
                         BigDecimal priceFactor = new BigDecimal("0.001");
@@ -49,6 +54,16 @@ public class UpdateStockPriceScheduledTask implements ScheduledTask {
 
                     stock.setCreatedAt(Instant.now());
                 })
-                .forEach(stockRepository::save);
+                .forEach(stock -> {
+                    stockRepository.save(stock);
+
+                    StockPriceChangeIntegrationEvent event = StockPriceChangeIntegrationEvent.builder()
+                            .stockId(stock.getId())
+                            .newPrice(stock.getPrice())
+                            .changedAt(stock.getCreatedAt())
+                            .build();
+
+                    eventBus.publish("stock-price-changes", event);
+                });
     }
 }

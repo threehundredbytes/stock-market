@@ -3,10 +3,10 @@ server:
 
 spring:
   application:
-    name: 'stock-service'
+    name: 'stock-price-service'
   datasource:
-    url: 'jdbc:postgresql://${postgresql.host:localhost}:${postgresql.port:5432}/${postgresql.database:stock_service}'
-    username: '${postgresql.username:stock_service_db_user}'
+    url: 'jdbc:postgresql://${postgresql.host:localhost}:${postgresql.port:5433}/${postgresql.database:stock_price_service}'
+    username: '${postgresql.username:stock_price_service_db_user}'
     password: '${postgresql.password:password}'
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -24,4 +24,4 @@ spring:
 
 logging:
   level:
-    ru.dreadblade.stockmarket.stockservice: TRACE
+    ru.dreadblade.stockmarket.stockpriceservice: TRACE

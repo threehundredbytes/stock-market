@@ -8,9 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>stock-service</artifactId>
-	<name>stock-service</name>
-	<description>stock-service</description>
+	<artifactId>stock-price-service</artifactId>
+	<name>stock-price-service</name>
+	<description>stock-price-service</description>
 
 	<properties>
 		<java.version>17</java.version>

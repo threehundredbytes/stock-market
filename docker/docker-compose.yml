@@ -1,6 +1,39 @@
 version: '3.9'
 name: stock-market
 services:
+  zookeeper:
+    image: zookeeper:3.8.0-temurin
+    container_name: zookeeper
+    networks:
+      - stock-market-network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: bitnami/kafka:3.2
+    container_name: kafka
+    hostname: kafka
+    networks:
+      - stock-market-network
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    restart: on-failure
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: yes
+      JMX_PORT: 9997
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper
+
   stock-service-postgresql:
     image: postgres:14
     container_name: stock-service-postgresql
@@ -12,6 +45,19 @@ services:
     environment:
       POSTGRES_DB: stock_service
       POSTGRES_USER: stock_service_db_user
+      POSTGRES_PASSWORD: password
+
+  stock-price-service-postgresql:
+    image: postgres:14
+    container_name: stock-price-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5433:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: stock_price_service
+      POSTGRES_USER: stock_price_service_db_user
       POSTGRES_PASSWORD: password
 
 networks:
