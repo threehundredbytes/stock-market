@@ -1,0 +1,24 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: 'stock-price-history-service'
+  data:
+    mongodb:
+      host: ${mongodb.host:localhost}
+      port: ${mongodb.port:27017}
+      database: ${mongodb.database:stockPriceHistoryServiceDB}
+      username: ${mongodb.username:stockPriceHistoryServiceDatabaseUser}
+      password: ${mongodb.password:password}
+      authentication-database: admin
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
+
+logging:
+  level:
+    ru.dreadblade.stockmarket.stockpricehistoryservice: TRACE

@@ -60,6 +60,19 @@ services:
       POSTGRES_USER: stock_price_service_db_user
       POSTGRES_PASSWORD: password
 
+  stock-price-history-service-mongodb:
+    image: mongo
+    container_name: stock-price-history-service-mongodb
+    networks:
+      - stock-market-network
+    ports:
+      - "27017:27017"
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: stockPriceHistoryServiceDatabaseUser
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: stockPriceHistoryServiceDB
+
 networks:
   stock-market-network:
     driver: bridge
