@@ -47,21 +47,19 @@ services:
       POSTGRES_USER: stock_service_db_user
       POSTGRES_PASSWORD: password
 
-  stock-price-service-postgresql:
-    image: postgres:14
-    container_name: stock-price-service-postgresql
+  stock-price-service-redis:
+    image: redis:7
+    container_name: stock-price-service-redis
     networks:
       - stock-market-network
     ports:
-      - "5433:5432"
+      - "6379:6379"
     restart: on-failure
     environment:
-      POSTGRES_DB: stock_price_service
-      POSTGRES_USER: stock_price_service_db_user
-      POSTGRES_PASSWORD: password
+      REDIS_PASSWORD: password
 
   stock-price-history-service-mongodb:
-    image: mongo
+    image: mongo:5
     container_name: stock-price-history-service-mongodb
     networks:
       - stock-market-network
