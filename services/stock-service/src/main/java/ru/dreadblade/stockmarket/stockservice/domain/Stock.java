@@ -19,7 +19,7 @@ public class Stock {
     private Long id;
 
     private String name;
-    private String code;
+    private String ticker;
     private BigDecimal price;
 
     @Builder.Default

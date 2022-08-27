@@ -35,8 +35,6 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>stock-service</module>
-		<module>stock-price-service</module>
-		<module>stock-price-history-service</module>
+		<module>services</module>
 	</modules>
 </project>

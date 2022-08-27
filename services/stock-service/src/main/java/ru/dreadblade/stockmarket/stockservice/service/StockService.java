@@ -23,7 +23,7 @@ public class StockService {
     public Stock addStock(StockRequestDTO stockRequestDTO) {
         Stock stock = stockRepository.save(Stock.builder()
                 .name(stockRequestDTO.name())
-                .code(stockRequestDTO.code())
+                .ticker(stockRequestDTO.ticker())
                 .price(stockRequestDTO.price())
                 .build());
 
