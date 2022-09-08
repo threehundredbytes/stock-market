@@ -1,0 +1,10 @@
+server:
+  port: 0
+
+app:
+  keycloak:
+    url: ${keycloak.url:http://localhost:8180}
+    realm: ${keycloak.realm}
+    client:
+      id: ${keycloak.client.id}
+      secret: ${keycloak.client.secret}

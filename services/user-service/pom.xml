@@ -8,12 +8,14 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>stock-price-history-service</artifactId>
-	<name>stock-price-history-service</name>
-	<description>stock-price-history-service</description>
+	<artifactId>user-service</artifactId>
+	<name>user-service</name>
+	<description>user-service</description>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<java.version>17</java.version>
+		<keycloak.version>19.0.0</keycloak.version>
 	</properties>
 
 	<dependencies>
@@ -21,13 +23,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-admin-client</artifactId>
+			<version>${keycloak.version}</version>
 		</dependency>
 
 		<dependency>
@@ -44,4 +44,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

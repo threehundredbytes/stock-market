@@ -6,6 +6,7 @@ services:
     container_name: zookeeper
     networks:
       - stock-market-network
+    restart: on-failure
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 
@@ -70,6 +71,19 @@ services:
       MONGO_INITDB_ROOT_USERNAME: stockPriceHistoryServiceDatabaseUser
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: stockPriceHistoryServiceDB
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.0
+    container_name: keycloak
+    networks:
+      - stock-market-network
+    ports:
+      - "8180:8080"
+    restart: on-failure
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
 
 networks:
   stock-market-network:
