@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: 'stock-price-history-service'
+    name: stock-price-history-service
   data:
     mongodb:
       host: ${mongodb.host:localhost}

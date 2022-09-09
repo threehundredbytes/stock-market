@@ -35,6 +35,7 @@
 	</dependencyManagement>
 
 	<modules>
+		<module>infrastructure</module>
 		<module>services</module>
 	</modules>
 </project>

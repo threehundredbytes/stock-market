@@ -3,11 +3,11 @@ server:
 
 spring:
   application:
-    name: 'stock-service'
+    name: stock-service
   datasource:
-    url: 'jdbc:postgresql://${postgresql.host:localhost}:${postgresql.port:5432}/${postgresql.database:stock_service}'
-    username: '${postgresql.username:stock_service_db_user}'
-    password: '${postgresql.password:password}'
+    url: jdbc:postgresql://${postgresql.host:localhost}:${postgresql.port:5432}/${postgresql.database:stock_service}
+    username: ${postgresql.username:stock_service_db_user}
+    password: ${postgresql.password:password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

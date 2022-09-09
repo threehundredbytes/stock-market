@@ -8,3 +8,7 @@ app:
     client:
       id: ${keycloak.client.id}
       secret: ${keycloak.client.secret}
+
+spring:
+  application:
+    name: user-service
