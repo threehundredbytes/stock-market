@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+app:
+  services:
+    stock-price-history-service: stock-price-history-service
+    stock-price-service: stock-price-service
+    stock-service: stock-service
+    user-service: user-service
+
+spring:
+  application:
+    name: gateway

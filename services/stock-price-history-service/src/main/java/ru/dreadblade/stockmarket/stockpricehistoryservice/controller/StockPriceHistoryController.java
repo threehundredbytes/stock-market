@@ -11,7 +11,7 @@ import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockPriceH
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/stock/")
+@RequestMapping("/stocks/")
 @RequiredArgsConstructor
 public class StockPriceHistoryController {
     private final StockPriceHistoryRepository stockHistoryRepository;

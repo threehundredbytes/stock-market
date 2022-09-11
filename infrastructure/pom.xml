@@ -18,5 +18,6 @@
 
 	<modules>
 		<module>discovery-service</module>
+		<module>gateway</module>
 	</modules>
 </project>

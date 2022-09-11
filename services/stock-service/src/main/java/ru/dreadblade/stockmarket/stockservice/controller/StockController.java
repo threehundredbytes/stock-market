@@ -9,7 +9,7 @@ import ru.dreadblade.stockmarket.stockservice.service.StockService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/stock")
+@RequestMapping("/stocks")
 @RequiredArgsConstructor
 public class StockController {
 
