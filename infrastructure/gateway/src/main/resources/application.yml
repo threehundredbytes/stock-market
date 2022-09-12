@@ -2,12 +2,36 @@ server:
   port: 8080
 
 app:
+  keycloak:
+    url: ${keycloak.url}
+    realm: ${keycloak.realm}
   services:
     stock-price-history-service: stock-price-history-service
     stock-price-service: stock-price-service
     stock-service: stock-service
     user-service: user-service
+  security:
+    jwt:
+      attribute:
+        username: preferred_username
 
 spring:
   application:
     name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.keycloak.url}/realms/${app.keycloak.realm}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.security: TRACE

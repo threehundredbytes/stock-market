@@ -3,11 +3,15 @@ server:
 
 app:
   keycloak:
-    url: ${keycloak.url:http://localhost:8180}
+    url: ${keycloak.url}
     realm: ${keycloak.realm}
     client:
-      id: ${keycloak.client.id}
-      secret: ${keycloak.client.secret}
+      frontend:
+        id: ${keycloak.client.frontend.id}
+      backend:
+        id: ${keycloak.client.backend.id}
+        secret: ${keycloak.client.backend.secret}
+
 
 spring:
   application:

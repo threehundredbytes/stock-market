@@ -1,6 +1,14 @@
 server:
   port: 0
 
+app:
+  security:
+    jwt:
+      issuer-url: ${keycloak.url}/realms/${keycloak.realm}
+      attribute:
+        username: preferred_username
+        roles: roles
+
 spring:
   application:
     name: stock-service
@@ -21,6 +29,12 @@ spring:
       auto-offset-reset: earliest
       properties:
         isolation.level: read_committed
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.security.jwt.issuer-url}
+          jwk-set-uri: ${app.security.jwt.issuer-url}/protocol/openid-connect/certs
 
 logging:
   level:

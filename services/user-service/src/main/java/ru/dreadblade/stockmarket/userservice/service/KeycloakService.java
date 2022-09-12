@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -22,6 +23,9 @@ public class KeycloakService {
 
     @Value("${app.keycloak.realm}")
     private String realmName;
+
+    @Value("${app.keycloak.client.frontend.id}")
+    private String frontendClientId;
 
     public void createUser(String username, String password, String roleName) {
         UserRepresentation userRepresentation = new UserRepresentation();
@@ -53,14 +57,17 @@ public class KeycloakService {
         String userId = CreatedResponseUtil.getCreatedId(response);
         response.close();
 
-        RoleRepresentation roleRepresentation = realmResource.roles()
-                .get(roleName)
+        ClientRepresentation frontendClient = realmResource.clients()
+                .findByClientId(frontendClientId).get(0);
+
+        RoleRepresentation roleRepresentation = realmResource
+                .clients().get(frontendClient.getId())
+                .roles().get(roleName)
                 .toRepresentation();
 
-        realmResource.users()
-                .get(userId)
+        realmResource.users().get(userId)
                 .roles()
-                .realmLevel()
+                .clientLevel(frontendClient.getId())
                 .add(List.of(roleRepresentation));
     }
 }

@@ -15,10 +15,10 @@ public class KeycloakConfiguration {
     @Value("${app.keycloak.realm}")
     private String realm;
 
-    @Value("${app.keycloak.client.id}")
+    @Value("${app.keycloak.client.backend.id}")
     private String clientId;
 
-    @Value("${app.keycloak.client.secret}")
+    @Value("${app.keycloak.client.backend.secret}")
     private String clientSecret;
 
     @Bean
