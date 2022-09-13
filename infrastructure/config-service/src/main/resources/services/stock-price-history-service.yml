@@ -1,0 +1,27 @@
+app:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: stockPriceHistoryServiceDB
+    username: stockPriceHistoryServiceDatabaseUser
+    password: password
+    authentication-database: admin
+  kafka:
+    host: localhost
+    port: 9092
+
+spring:
+  data:
+    mongodb:
+      host: ${app.mongodb.host}
+      port: ${app.mongodb.port}
+      database: ${app.mongodb.database}
+      username: ${app.mongodb.username}
+      password: ${app.mongodb.password}
+      authentication-database: ${app.mongodb.authentication-database}
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StockMarketJwtDecoder implements JwtDecoder {
-    @Value("${app.security.jwt.issuer-url}")
+    @Value("${app.auth-server.issuer-uri}")
     private String issuer;
 
     @Override

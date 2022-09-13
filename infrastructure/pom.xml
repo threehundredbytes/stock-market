@@ -17,6 +17,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>config-service</module>
 		<module>discovery-service</module>
 		<module>gateway</module>
 	</modules>

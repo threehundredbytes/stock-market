@@ -1,7 +1,16 @@
 server:
   port: 8761
 
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
+app:
+  config-service:
+    url: http://localhost:8888
+
+spring:
+  application:
+    name: discovery-service
+  config:
+    import: configserver:${app.config-service.url}
+  cloud:
+    config:
+      uri: ${app.config-service.url}
+      fail-fast: true
