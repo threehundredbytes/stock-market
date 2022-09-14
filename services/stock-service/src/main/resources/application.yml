@@ -4,6 +4,8 @@ server:
 app:
   config-service:
     url: http://localhost:8888
+    username: user
+    password: password
 
 spring:
   application:
@@ -14,6 +16,8 @@ spring:
     config:
       uri: ${app.config-service.url}
       fail-fast: true
+      username: ${app.config-service.username}
+      password: ${app.config-service.password}
 
 logging:
   level:
