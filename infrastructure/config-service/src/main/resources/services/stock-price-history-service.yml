@@ -3,12 +3,9 @@ app:
     host: localhost
     port: 27017
     database: stockPriceHistoryServiceDB
-    username: stockPriceHistoryServiceDatabaseUser
-    password: password
+    username: '{cipher}9c4c12376e71daa2091e79289dd5a0ba893bcf5cae843a313ca576e821494482a8cb77ffbce8ac6c53ae5aabc3e474fe5627a95ea99b96a085e325d22c80b34a'
+    password: '{cipher}fe20f25cf5e5af56bd3bf3ead68a10d49a51abfb7093fb90dd03942799a127c8'
     authentication-database: admin
-  kafka:
-    host: localhost
-    port: 9092
 
 spring:
   data:

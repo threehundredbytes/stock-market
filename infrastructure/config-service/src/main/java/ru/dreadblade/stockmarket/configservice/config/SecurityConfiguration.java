@@ -18,12 +18,23 @@ public class SecurityConfiguration {
     @Value("${app.config-service.user.password}")
     private String password;
 
+    @Value("${app.config-service.admin.username}")
+    private String adminUsername;
+
+    @Value("${app.config-service.admin.password}")
+    private String adminPassword;
+
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
         userDetailsManager.createUser(User.withUsername(username)
                 .password(password)
                 .roles("USER")
+                .build());
+
+        userDetailsManager.createUser(User.withUsername(adminUsername)
+                .password(adminPassword)
+                .roles("ADMIN")
                 .build());
 
         return userDetailsManager;
@@ -36,6 +47,7 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/actuator/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

@@ -11,4 +11,4 @@ app:
         id: stock-market-frontend
       backend:
         id: stock-market-backend
-        secret: OItyWT4zcS3LgfXh7IR3jWiSSCzgy3kI
+        secret: '{cipher}781451dda543a522c222e66ec65cf2925d7409a5171fce506b7176e4e3c7a2df427b4d29fb45657e655febf6c9f9f7a6dd9bedf9cbdb494b9d8271b8dd630f13'

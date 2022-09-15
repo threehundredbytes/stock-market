@@ -6,6 +6,15 @@ app:
     user:
       username: user
       password: '{bcrypt}$2a$10$H1dDJ6gGmDjT5mgWweG5xOKOzPucJz0OSycDNcUbF0O5dzweamQfi'
+    admin:
+      username: admin
+      password: '{bcrypt}$2a$10$H1dDJ6gGmDjT5mgWweG5xOKOzPucJz0OSycDNcUbF0O5dzweamQfi'
+  kafka:
+    host: localhost
+    port: 9092
+
+encrypt:
+  key: dev-only-password
 
 spring:
   application:
@@ -13,5 +22,15 @@ spring:
   cloud:
     config:
       server:
+        git:
+          uri: https://github.com/Dreadblade-dev/stock-market-configuration
         native:
           search-locations: classpath:/services
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: busrefresh

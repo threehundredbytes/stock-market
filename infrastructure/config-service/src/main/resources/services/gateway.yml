@@ -4,17 +4,6 @@ app:
     stock-price-service: stock-price-service
     stock-service: stock-service
     user-service: user-service
-  auth-server:
-    protocol: http
-    host: localhost
-    port: 8180
-    realm: stock-market
-    issuer-uri: ${app.auth-server.protocol}://${app.auth-server.host}:${app.auth-server.port}/realms/${app.auth-server.realm}
-    jwk-set-uri: ${app.auth-server.issuer-uri}/protocol/openid-connect/certs
-  security:
-    jwt:
-      attribute:
-        username: preferred_username
 
 spring:
   cloud:
