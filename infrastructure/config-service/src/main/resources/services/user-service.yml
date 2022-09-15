@@ -1,0 +1,14 @@
+app:
+  auth-server:
+    protocol: http
+    host: localhost
+    port: 8180
+    realm: stock-market
+    issuer-uri: ${app.auth-server.protocol}://${app.auth-server.host}:${app.auth-server.port}/realms/${app.auth-server.realm}
+    jwk-set-uri: ${app.auth-server.issuer.uri}/protocol/openid-connect/certs
+    client:
+      frontend:
+        id: stock-market-frontend
+      backend:
+        id: stock-market-backend
+        secret: '{cipher}781451dda543a522c222e66ec65cf2925d7409a5171fce506b7176e4e3c7a2df427b4d29fb45657e655febf6c9f9f7a6dd9bedf9cbdb494b9d8271b8dd630f13'

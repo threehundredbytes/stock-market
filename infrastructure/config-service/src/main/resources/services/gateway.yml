@@ -1,0 +1,20 @@
+app:
+  services:
+    stock-price-history-service: stock-price-history-service
+    stock-price-service: stock-price-service
+    stock-service: stock-service
+    user-service: user-service
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.auth-server.issuer-uri}
+          jwk-set-uri: ${app.auth-server.jwk-set-uri}

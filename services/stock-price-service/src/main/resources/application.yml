@@ -1,22 +1,23 @@
 server:
   port: 0
 
+app:
+  config-service:
+    url: http://localhost:8888
+    username: user
+    password: password
+
 spring:
   application:
     name: stock-price-service
-  redis:
-    host: ${redis.host:localhost}
-    port: ${redis.port:6379}
-    password: ${redis.password:password}
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      properties:
-        spring.json.add.type.headers: false
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        isolation.level: read_committed
+  config:
+    import: configserver:${app.config-service.url}
+  cloud:
+    config:
+      uri: ${app.config-service.url}
+      fail-fast: true
+      username: ${app.config-service.username}
+      password: ${app.config-service.password}
 
 logging:
   level:

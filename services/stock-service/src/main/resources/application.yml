@@ -2,39 +2,22 @@ server:
   port: 0
 
 app:
-  security:
-    jwt:
-      issuer-url: ${keycloak.url}/realms/${keycloak.realm}
-      attribute:
-        username: preferred_username
-        roles: roles
+  config-service:
+    url: http://localhost:8888
+    username: user
+    password: password
 
 spring:
   application:
     name: stock-service
-  datasource:
-    url: jdbc:postgresql://${postgresql.host:localhost}:${postgresql.port:5432}/${postgresql.database:stock_service}
-    username: ${postgresql.username:stock_service_db_user}
-    password: ${postgresql.password:password}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      properties:
-        spring.json.add.type.headers: false
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        isolation.level: read_committed
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${app.security.jwt.issuer-url}
-          jwk-set-uri: ${app.security.jwt.issuer-url}/protocol/openid-connect/certs
+  config:
+    import: configserver:${app.config-service.url}
+  cloud:
+    config:
+      uri: ${app.config-service.url}
+      fail-fast: true
+      username: ${app.config-service.username}
+      password: ${app.config-service.password}
 
 logging:
   level:

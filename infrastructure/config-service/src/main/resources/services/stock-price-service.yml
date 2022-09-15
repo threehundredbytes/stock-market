@@ -1,0 +1,20 @@
+app:
+  redis:
+    host: localhost
+    port: 6379
+    password: '{cipher}25067076df2af48bcd7572760c06a807f97ac847cd4cd0fda82b89c989738696'
+
+spring:
+  redis:
+    host: ${app.redis.host}
+    port: ${app.redis.port}
+    password: ${app.redis.password}
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed

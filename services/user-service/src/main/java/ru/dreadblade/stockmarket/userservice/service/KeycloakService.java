@@ -21,10 +21,10 @@ import java.util.List;
 public class KeycloakService {
     private final Keycloak keycloak;
 
-    @Value("${app.keycloak.realm}")
+    @Value("${app.auth-server.realm}")
     private String realmName;
 
-    @Value("${app.keycloak.client.frontend.id}")
+    @Value("${app.auth-server.client.frontend.id}")
     private String frontendClientId;
 
     public void createUser(String username, String password, String roleName) {
