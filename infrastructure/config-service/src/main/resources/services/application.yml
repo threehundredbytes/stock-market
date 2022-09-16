@@ -14,3 +14,21 @@ app:
   kafka:
     host: localhost
     port: 9092
+  eureka:
+    protocol: http
+    host: localhost
+    port: 8761
+    username: service
+    password: '{cipher}a384013b4ba6dd92bd9cdae9c82321eddadb3d99400bb58e355e154fdb7b2824'
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${random.uuid}
+    hostname: ${app.eureka.host}
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: ${app.eureka.protocol}://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
+    healthcheck:
+      enabled: true

@@ -1,3 +1,12 @@
+app:
+  eureka:
+    service:
+      username: service
+      password: '{bcrypt}$2a$10$H1dDJ6gGmDjT5mgWweG5xOKOzPucJz0OSycDNcUbF0O5dzweamQfi'
+    admin:
+      username: admin
+      password: '{bcrypt}$2a$10$H1dDJ6gGmDjT5mgWweG5xOKOzPucJz0OSycDNcUbF0O5dzweamQfi'
+
 eureka:
   client:
     register-with-eureka: false
