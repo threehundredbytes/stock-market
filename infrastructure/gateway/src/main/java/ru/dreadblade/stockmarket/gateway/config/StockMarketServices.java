@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class StockMarketServices {
+    private String accountService;
     private String stockPriceHistoryService;
     private String stockPriceService;
     private String stockService;

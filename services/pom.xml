@@ -17,6 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>account-service</module>
         <module>stock-price-history-service</module>
         <module>stock-price-service</module>
         <module>stock-service</module>

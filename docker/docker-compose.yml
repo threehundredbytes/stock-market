@@ -35,29 +35,18 @@ services:
     links:
       - zookeeper
 
-  stock-service-postgresql:
+  account-service-postgresql:
     image: postgres:14
-    container_name: stock-service-postgresql
+    container_name: account-service-postgresql
     networks:
       - stock-market-network
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: on-failure
     environment:
-      POSTGRES_DB: stock_service
-      POSTGRES_USER: stock_service_db_user
+      POSTGRES_DB: account_service
+      POSTGRES_USER: account_service_db_user
       POSTGRES_PASSWORD: password
-
-  stock-price-service-redis:
-    image: redis:7
-    container_name: stock-price-service-redis
-    networks:
-      - stock-market-network
-    ports:
-      - "6379:6379"
-    restart: on-failure
-    environment:
-      REDIS_PASSWORD: password
 
   stock-price-history-service-mongodb:
     image: mongo:5
@@ -71,6 +60,30 @@ services:
       MONGO_INITDB_ROOT_USERNAME: stockPriceHistoryServiceDatabaseUser
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: stockPriceHistoryServiceDB
+
+  stock-price-service-redis:
+    image: redis:7
+    container_name: stock-price-service-redis
+    networks:
+      - stock-market-network
+    ports:
+      - "6379:6379"
+    restart: on-failure
+    environment:
+      REDIS_PASSWORD: password
+
+  stock-service-postgresql:
+    image: postgres:14
+    container_name: stock-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: stock_service
+      POSTGRES_USER: stock_service_db_user
+      POSTGRES_PASSWORD: password
 
   keycloak:
     image: quay.io/keycloak/keycloak:19.0.0
