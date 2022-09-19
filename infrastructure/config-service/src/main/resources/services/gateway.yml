@@ -1,6 +1,7 @@
 app:
   services:
     account-service: account-service
+    payment-service: payment-service
     stock-price-history-service: stock-price-history-service
     stock-price-service: stock-price-service
     stock-service: stock-service

@@ -15,6 +15,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
   security:
     oauth2:
       resourceserver:
