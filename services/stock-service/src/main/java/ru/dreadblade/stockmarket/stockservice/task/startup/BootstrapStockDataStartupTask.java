@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.stockservice.dto.StockRequestDTO;
+import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
 import ru.dreadblade.stockmarket.stockservice.service.StockService;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.List;
 public class BootstrapStockDataStartupTask implements StartupTask {
 
     private final StockService stockService;
+    private final StockRepository stockRepository;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -23,6 +25,10 @@ public class BootstrapStockDataStartupTask implements StartupTask {
 
     @Override
     public void run() {
+        if (stockRepository.count() > 0) {
+            return;
+        }
+
         List<StockRequestDTO> stockList = new ArrayList<>();
 
         stockList.add(StockRequestDTO.builder()

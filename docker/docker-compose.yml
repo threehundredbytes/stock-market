@@ -48,6 +48,19 @@ services:
       POSTGRES_USER: account_service_db_user
       POSTGRES_PASSWORD: password
 
+  order-service-postgresql:
+    image: postgres:14
+    container_name: order-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5434:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: order_service
+      POSTGRES_USER: order_service_db_user
+      POSTGRES_PASSWORD: password
+
   stock-price-history-service-mongodb:
     image: mongo:5
     container_name: stock-price-history-service-mongodb

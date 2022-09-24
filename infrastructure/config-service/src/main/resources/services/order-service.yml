@@ -1,0 +1,32 @@
+app:
+  postgresql:
+    host: localhost
+    port: 5434
+    database: order_service
+    username: '{cipher}15dd16d5baaa8f001fca91246c0f878f17870afd306d9879dba83a7f1106f1da3f9704925cbdd02fdf6bb43c77627d45'
+    password: '{cipher}86ee6027c412a8b535582a1619070fee979f79aa4d20df59024b9de12da8183a'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${app.postgresql.host}:${app.postgresql.port}/${app.postgresql.database}
+    username: ${app.postgresql.username}
+    password: ${app.postgresql.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.auth-server.issuer-uri}
+          jwk-set-uri: ${app.auth-server.jwk-set-uri}

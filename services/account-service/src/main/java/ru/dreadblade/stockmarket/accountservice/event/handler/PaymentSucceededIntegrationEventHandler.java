@@ -17,7 +17,7 @@ public class PaymentSucceededIntegrationEventHandler implements IntegrationEvent
 
     private final AccountRepository accountRepository;
 
-    @KafkaListener(groupId = "payments-account-service-group", topics = "payments")
+    @KafkaListener(groupId = "account-service-group", topics = "payments")
     @Override
     public void handleIntegrationEvent(PaymentSucceededIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),

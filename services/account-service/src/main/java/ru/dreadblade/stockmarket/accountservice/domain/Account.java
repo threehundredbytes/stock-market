@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,9 +15,13 @@ import java.math.BigDecimal;
 @Entity
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_sequence")
-    @SequenceGenerator(name = "account_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String ownerId;
-    private BigDecimal balance;
+
+    @Builder.Default
+    private BigDecimal balance = BigDecimal.ZERO;
+
+    @Builder.Default
+    private BigDecimal reservedBalance = BigDecimal.ZERO;
 }

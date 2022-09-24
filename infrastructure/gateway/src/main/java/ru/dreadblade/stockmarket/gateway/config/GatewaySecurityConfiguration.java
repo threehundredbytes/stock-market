@@ -19,7 +19,7 @@ public class GatewaySecurityConfiguration {
         httpSecurity
                 .csrf().disable()
                 .authorizeExchange()
-                .anyExchange().authenticated()
+                .anyExchange().permitAll()
                 .and()
                 .oauth2ResourceServer()
                 .jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(jwt -> {
