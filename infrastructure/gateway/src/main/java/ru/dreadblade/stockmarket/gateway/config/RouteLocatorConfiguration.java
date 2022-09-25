@@ -18,7 +18,7 @@ public class RouteLocatorConfiguration {
     private final static String[] PAYMENT_SERVICE_PATH = { "/api/v1/payments", "/api/v1/accounts/{accountId}/payments" };
 
     private final static String STOCK_PRICE_HISTORY_SERVICE_PATH = "/api/v1/stocks/{stockId}/history";
-    private final static String STOCK_SERVICE_PATH = "/api/v1/stocks";
+    private final static String[] STOCK_SERVICE_PATH = { "/api/v1/stocks", "/api/v1/stocks/ws" };
     private final static String USER_SERVICE_PATH = "/api/v1/auth/signup";
 
     private final StockMarketServices stockMarketServices;

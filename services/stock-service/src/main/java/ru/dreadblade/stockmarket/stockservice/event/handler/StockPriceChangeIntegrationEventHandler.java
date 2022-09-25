@@ -3,6 +3,7 @@ package ru.dreadblade.stockmarket.stockservice.event.handler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.stockservice.domain.Stock;
 import ru.dreadblade.stockmarket.stockservice.event.StockPriceChangeIntegrationEvent;
@@ -12,6 +13,7 @@ import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class StockPriceChangeIntegrationEventHandler implements IntegrationEventHandler<StockPriceChangeIntegrationEvent> {
+    private final SimpMessagingTemplate messagingTemplate;
     private final StockRepository stockRepository;
 
     @KafkaListener(groupId = "stock-service-group", topics = "stock-price-change")
@@ -26,5 +28,7 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
         stock.setUpdatedAt(integrationEvent.getChangedAt());
 
         stockRepository.save(stock);
+
+        messagingTemplate.convertAndSend("/topic/stock-price-change", integrationEvent);
     }
 }
