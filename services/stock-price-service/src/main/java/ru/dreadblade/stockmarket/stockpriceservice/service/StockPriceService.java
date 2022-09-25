@@ -65,7 +65,7 @@ public class StockPriceService {
                             .changedAt(Instant.now())
                             .build();
 
-                    eventBus.publish("stock-price-changes", event);
+                    eventBus.publish("stock-price-change", event);
                 });
     }
 }

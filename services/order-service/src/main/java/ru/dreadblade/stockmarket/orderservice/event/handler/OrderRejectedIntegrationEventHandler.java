@@ -20,7 +20,7 @@ public class OrderRejectedIntegrationEventHandler implements IntegrationEventHan
     @KafkaListener(groupId = "order-service-group", topics = "order-rejected")
     @Override
     public void handleIntegrationEvent(OrderRejectedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Order order = orderRepository.findById(integrationEvent.getOrderId()).orElseThrow(IllegalStateException::new);

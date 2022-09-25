@@ -14,10 +14,10 @@ import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockReposi
 public class StockCreatedIntegrationEventHandler implements IntegrationEventHandler<StockCreatedIntegrationEvent> {
     private final StockRepository stockRepository;
 
-    @KafkaListener(groupId = "stock-created-stock-history-service-group", topics = "stock-created")
+    @KafkaListener(groupId = "stock-price-history-service-group", topics = "stock-created")
     @Override
     public void handleIntegrationEvent(StockCreatedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Stock stock = Stock.builder()

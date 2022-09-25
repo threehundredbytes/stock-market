@@ -18,7 +18,7 @@ public class OrderConfirmedIntegrationEventHandler implements IntegrationEventHa
     @KafkaListener(groupId = "order-service-group", topics = "order-confirmed")
     @Override
     public void handleIntegrationEvent(OrderConfirmedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Order order = orderRepository.findById(integrationEvent.getOrderId()).orElseThrow(IllegalStateException::new);

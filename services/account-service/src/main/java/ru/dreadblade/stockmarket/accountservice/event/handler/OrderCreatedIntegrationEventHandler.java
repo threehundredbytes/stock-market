@@ -33,7 +33,7 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
     @KafkaListener(groupId = "account-service-group", topics = "order-created")
     @Override
     public void handleIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Account account = accountRepository.findById(integrationEvent.getAccountId()).orElseThrow(IllegalStateException::new);

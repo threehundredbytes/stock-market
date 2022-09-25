@@ -17,7 +17,7 @@ public class StockCreatedIntegrationEventHandler implements IntegrationEventHand
     @KafkaListener(groupId = "order-service-group", topics = "stock-created")
     @Override
     public void handleIntegrationEvent(StockCreatedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Stock stock = Stock.builder()

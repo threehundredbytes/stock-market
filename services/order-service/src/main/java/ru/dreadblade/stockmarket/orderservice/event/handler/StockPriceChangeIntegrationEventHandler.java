@@ -21,10 +21,10 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
     private final OrderRepository orderRepository;
     private final EventBus eventBus;
 
-    @KafkaListener(groupId = "order-service-group", topics = "stock-price-changes")
+    @KafkaListener(groupId = "order-service-group", topics = "stock-price-change")
     @Override
     public void handleIntegrationEvent(StockPriceChangeIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Long stockId = integrationEvent.getStockId();

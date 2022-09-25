@@ -15,7 +15,7 @@ public class RouteLocatorConfiguration {
 
     private final static String[] ACCOUNT_SERVICE_PATH = { "/api/v1/accounts", "/api/v1/accounts/{accountId}/stocks" };
     private final static String[] ORDER_SERVICE_PATH = { "/api/v1/orders", "/api/v1/accounts/{accountId}/orders"};
-    private final static String PAYMENT_SERVICE_PATH = "/api/v1/payments";
+    private final static String[] PAYMENT_SERVICE_PATH = { "/api/v1/payments", "/api/v1/accounts/{accountId}/payments" };
 
     private final static String STOCK_PRICE_HISTORY_SERVICE_PATH = "/api/v1/stocks/{stockId}/history";
     private final static String STOCK_SERVICE_PATH = "/api/v1/stocks";
@@ -47,7 +47,7 @@ public class RouteLocatorConfiguration {
                         .uri(getLoadBalancerUri(stockMarketServices.getOrderService()))
                 )
                 .route(stockMarketServices.getPaymentService(), r -> r
-                        .method(HttpMethod.POST)
+                        .method(HttpMethod.GET, HttpMethod.POST)
                         .and()
                         .path(PAYMENT_SERVICE_PATH)
                         .filters(f -> f

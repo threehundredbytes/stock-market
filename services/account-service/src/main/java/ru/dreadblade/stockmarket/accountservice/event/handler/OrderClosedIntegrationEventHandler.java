@@ -28,7 +28,7 @@ public class OrderClosedIntegrationEventHandler implements IntegrationEventHandl
     @KafkaListener(groupId = "account-service-group", topics = "order-closed")
     @Override
     public void handleIntegrationEvent(OrderClosedIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}\n", integrationEvent.getId().toString(),
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
         Account account = accountRepository.findById(integrationEvent.getAccountId()).orElseThrow(IllegalStateException::new);
