@@ -12,6 +12,7 @@ public class OrderCreatedIntegrationEvent extends IntegrationEvent {
     private Long orderId;
     private Long accountId;
     private Long stockId;
+    private String stockTicker;
     private Long stockQuantity;
     private BigDecimal pricePerStock;
     private OrderType orderType;

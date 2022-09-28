@@ -14,4 +14,5 @@ import javax.persistence.Id;
 public class Stock {
     @Id
     private Long id;
+    private String ticker;
 }

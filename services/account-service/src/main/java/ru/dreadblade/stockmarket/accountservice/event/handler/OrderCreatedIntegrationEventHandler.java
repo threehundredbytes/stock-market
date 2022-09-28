@@ -41,6 +41,7 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
         Long orderStockQuantity = integrationEvent.getStockQuantity();
         BigDecimal orderPrice = integrationEvent.getPricePerStock()
                 .multiply(new BigDecimal(orderStockQuantity));
+        String userId = account.getOwnerId();
 
         if (PURCHASE.equals(integrationEvent.getOrderType())) {
             BigDecimal reservedAccountBalance = account.getReservedBalance();
@@ -50,9 +51,9 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
 
                 accountRepository.save(account);
 
-                eventBus.publish("order-confirmed", new OrderConfirmedIntegrationEvent(integrationEvent.getOrderId()));
+                eventBus.publish("order-confirmed", mapToOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
             } else {
-                eventBus.publish("order-rejected", new OrderRejectedIntegrationEvent(integrationEvent.getOrderId()));
+                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
             }
         }
 
@@ -62,7 +63,8 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
             Optional<StockOnAccount> stockOnAccountOptional = stockOnAccountRepository.findByAccountAndStock(account, stock);
 
             if (stockOnAccountOptional.isEmpty()) {
-                eventBus.publish("order-rejected", new OrderRejectedIntegrationEvent(integrationEvent.getOrderId()));
+                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
+
                 return;
             }
 
@@ -75,10 +77,30 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
 
                 stockOnAccountRepository.save(stockOnAccount);
 
-                eventBus.publish("order-confirmed", new OrderConfirmedIntegrationEvent(integrationEvent.getOrderId()));
+                eventBus.publish("order-confirmed", mapToOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
             } else {
-                eventBus.publish("order-rejected", new OrderRejectedIntegrationEvent(integrationEvent.getOrderId()));
+                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
             }
         }
+    }
+
+    private OrderConfirmedIntegrationEvent mapToOrderConfirmedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
+        return OrderConfirmedIntegrationEvent.builder()
+                .orderId(integrationEvent.getOrderId())
+                .orderPrice(orderPrice)
+                .orderType(integrationEvent.getOrderType())
+                .stockTicker(integrationEvent.getStockTicker())
+                .userId(userId)
+                .build();
+    }
+
+    private OrderRejectedIntegrationEvent mapToOrderRejectedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
+        return OrderRejectedIntegrationEvent.builder()
+                .orderId(integrationEvent.getOrderId())
+                .orderPrice(orderPrice)
+                .orderType(integrationEvent.getOrderType())
+                .stockTicker(integrationEvent.getStockTicker())
+                .userId(userId)
+                .build();
     }
 }

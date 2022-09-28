@@ -1,0 +1,32 @@
+app:
+  postgresql:
+    host: localhost
+    port: 5436
+    database: notification_service
+    username: '{cipher}8cd6b2f08d65ea47cac94ea709fb98747c95a081ee97e1dc38392bc8b555453f75101fb04b380a29c374cbcaea66b173'
+    password: '{cipher}1cc055aaf76e1b028757741a4e65d5af175f49de0c33bd743ca35bf3458a7aa5'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${app.postgresql.host}:${app.postgresql.port}/${app.postgresql.database}
+    username: ${app.postgresql.username}
+    password: ${app.postgresql.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.auth-server.issuer-uri}
+          jwk-set-uri: ${app.auth-server.jwk-set-uri}

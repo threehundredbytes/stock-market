@@ -13,7 +13,9 @@ import java.math.BigDecimal;
 public class OrderClosedIntegrationEvent extends IntegrationEvent {
     private Long stockId;
     private Long accountId;
+    private String stockTicker;
     private BigDecimal pricePerStock;
     private Long quantity;
     private OrderType orderType;
+    private String userId;
 }

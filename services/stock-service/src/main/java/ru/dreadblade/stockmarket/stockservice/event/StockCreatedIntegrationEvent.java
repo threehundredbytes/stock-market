@@ -10,6 +10,7 @@ import java.time.Instant;
 @Builder
 public class StockCreatedIntegrationEvent extends IntegrationEvent {
     private Long stockId;
+    private String stockTicker;
     private BigDecimal stockPrice;
     private Instant stockCreatedAt;
 }

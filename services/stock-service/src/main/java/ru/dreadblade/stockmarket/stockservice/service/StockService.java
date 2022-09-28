@@ -29,6 +29,7 @@ public class StockService {
 
         StockCreatedIntegrationEvent stockCreatedIntegrationEvent = StockCreatedIntegrationEvent.builder()
                 .stockId(stock.getId())
+                .stockTicker(stock.getTicker())
                 .stockPrice(stock.getPrice())
                 .stockCreatedAt(stock.getCreatedAt())
                 .build();

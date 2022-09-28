@@ -66,11 +66,13 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
         order.setClosedAt(closedAt);
 
         var orderClosedIntegrationEvent = OrderClosedIntegrationEvent.builder()
-                .orderType(order.getOrderType())
-                .pricePerStock(order.getPricePerStock())
-                .stockId(order.getStock().getId())
-                .quantity(order.getInitialQuantity())
                 .accountId(order.getAccount().getId())
+                .stockId(order.getStock().getId())
+                .stockTicker(order.getStock().getTicker())
+                .pricePerStock(order.getPricePerStock())
+                .quantity(order.getInitialQuantity())
+                .orderType(order.getOrderType())
+                .userId(order.getAccount().getOwnerId())
                 .build();
 
         eventBus.publish("order-closed", orderClosedIntegrationEvent);

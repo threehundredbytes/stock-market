@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class StockMarketServices {
     private String accountService;
+    private String notificationService;
     private String orderService;
     private String paymentService;
     private String stockPriceHistoryService;

@@ -1,0 +1,50 @@
+package ru.dreadblade.stockmarket.notificationservice.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.support.converter.StringJsonMessageConverter;
+
+@Configuration
+@RequiredArgsConstructor
+public class KafkaConfiguration {
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
+
+    @Bean
+    public StringJsonMessageConverter stringJsonMessageConverter() {
+        return new StringJsonMessageConverter(objectMapper());
+    }
+
+    @Bean
+    public NewTopic orderClosedTopic() {
+        return new NewTopic("order-closed", 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic orderConfirmedTopic() {
+        return new NewTopic("order-confirmed", 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic orderRejectedTopic() {
+        return new NewTopic("order-rejected", 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic stockCreatedTopic() {
+        return new NewTopic("stock-created", 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic stockPriceChangeTopic() {
+        return new NewTopic("stock-price-change", 1, (short) 1);
+    }
+}

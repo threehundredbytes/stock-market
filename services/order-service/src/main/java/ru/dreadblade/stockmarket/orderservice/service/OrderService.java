@@ -64,6 +64,7 @@ public class OrderService {
                 .orderId(order.getId())
                 .accountId(account.getId())
                 .stockId(stock.getId())
+                .stockTicker(stock.getTicker())
                 .stockQuantity(order.getInitialQuantity())
                 .pricePerStock(order.getPricePerStock())
                 .orderType(order.getOrderType())
