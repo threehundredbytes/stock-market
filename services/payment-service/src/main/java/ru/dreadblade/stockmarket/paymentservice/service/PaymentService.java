@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.paymentservice.api.mapper.PaymentMapper;
+import ru.dreadblade.stockmarket.paymentservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.paymentservice.domain.Account;
 import ru.dreadblade.stockmarket.paymentservice.domain.Payment;
 import ru.dreadblade.stockmarket.paymentservice.domain.PaymentStatus;
@@ -23,8 +24,11 @@ import java.util.List;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
-    private final PaymentMapper paymentMapper;
+
+    private final KafkaTopics kafkaTopics;
     private final EventBus eventBus;
+
+    private final PaymentMapper paymentMapper;
 
     public List<PaymentResponseDTO> findAllByAccountId(Long accountId, String userId) {
         Account account = accountRepository.findById(accountId)
@@ -63,7 +67,7 @@ public class PaymentService {
                 .paymentStatus(payment.getPaymentStatus())
                 .build();
 
-        eventBus.publish("payment-created", event);
+        eventBus.publish(kafkaTopics.getPaymentCreated(), event);
 
         return paymentMapper.mapEntityToResponseDTO(payment);
     }

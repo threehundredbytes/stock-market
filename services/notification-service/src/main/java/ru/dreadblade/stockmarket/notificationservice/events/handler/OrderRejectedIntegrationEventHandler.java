@@ -13,7 +13,7 @@ import ru.dreadblade.stockmarket.notificationservice.events.OrderRejectedIntegra
 public class OrderRejectedIntegrationEventHandler implements IntegrationEventHandler<OrderRejectedIntegrationEvent> {
     private final SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(groupId = "notification-service-group", topics = "order-rejected")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-rejected}")
     @Override
     public void handleIntegrationEvent(OrderRejectedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

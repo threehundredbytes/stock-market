@@ -21,7 +21,7 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
     private final StockRepository stockRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(groupId = "notification-service-group", topics = "stock-price-change")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.stock-price-change}")
     @Override
     public void handleIntegrationEvent(StockPriceChangeIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

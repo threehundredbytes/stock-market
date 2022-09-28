@@ -14,7 +14,7 @@ import ru.dreadblade.stockmarket.orderservice.repository.AccountRepository;
 public class AccountCreatedIntegrationEventHandler implements IntegrationEventHandler<AccountCreatedIntegrationEvent> {
     private final AccountRepository accountRepository;
 
-    @KafkaListener(groupId = "order-service-group", topics = "account-created")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.account-created}")
     @Override
     public void handleIntegrationEvent(AccountCreatedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

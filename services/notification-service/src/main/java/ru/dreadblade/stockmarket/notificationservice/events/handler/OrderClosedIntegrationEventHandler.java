@@ -13,7 +13,7 @@ import ru.dreadblade.stockmarket.notificationservice.events.OrderClosedIntegrati
 public class OrderClosedIntegrationEventHandler implements IntegrationEventHandler<OrderClosedIntegrationEvent> {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @KafkaListener(groupId = "notification-service-group", topics = "order-closed")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-closed}")
     @Override
     public void handleIntegrationEvent(OrderClosedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

@@ -12,6 +12,8 @@ import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 @Configuration
 @RequiredArgsConstructor
 public class KafkaConfiguration {
+    private final KafkaTopics kafkaTopics;
+
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
                 .registerModule(new JavaTimeModule())
@@ -25,26 +27,26 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic orderClosedTopic() {
-        return new NewTopic("order-closed", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getOrderClosed(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic orderConfirmedTopic() {
-        return new NewTopic("order-confirmed", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getOrderConfirmed(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic orderRejectedTopic() {
-        return new NewTopic("order-rejected", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getOrderRejected(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic stockCreatedTopic() {
-        return new NewTopic("stock-created", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockCreated(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic stockPriceChangeTopic() {
-        return new NewTopic("stock-price-change", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockPriceChange(), 1, (short) 1);
     }
 }

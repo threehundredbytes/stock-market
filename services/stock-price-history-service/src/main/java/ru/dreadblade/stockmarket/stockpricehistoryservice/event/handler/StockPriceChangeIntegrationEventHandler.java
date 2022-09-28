@@ -14,7 +14,7 @@ import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockReposi
 public class StockPriceChangeIntegrationEventHandler implements IntegrationEventHandler<StockPriceChangeIntegrationEvent> {
     private final StockRepository stockRepository;
 
-    @KafkaListener(groupId = "stock-price-history-service-group", topics = "stock-price-change")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.stock-price-change}")
     @Override
     public void handleIntegrationEvent(StockPriceChangeIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

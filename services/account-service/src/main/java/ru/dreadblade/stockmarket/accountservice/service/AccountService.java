@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.accountservice.api.mapper.AccountMapper;
 import ru.dreadblade.stockmarket.accountservice.api.mapper.StockOnAccountMapper;
+import ru.dreadblade.stockmarket.accountservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.accountservice.domain.Account;
 import ru.dreadblade.stockmarket.accountservice.event.AccountCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.accountservice.event.bus.EventBus;
@@ -21,6 +22,8 @@ import java.util.List;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final StockOnAccountRepository stockOnAccountRepository;
+
+    private final KafkaTopics kafkaTopics;
     private final EventBus eventBus;
 
     private final AccountMapper accountMapper;
@@ -57,7 +60,7 @@ public class AccountService {
                 .ownerId(account.getOwnerId())
                 .build();
 
-        eventBus.publish("account-created", accountCreatedIntegrationEvent);
+        eventBus.publish(kafkaTopics.getAccountCreated(), accountCreatedIntegrationEvent);
 
         return accountMapper.mapEntityToResponseDTO(account);
     }

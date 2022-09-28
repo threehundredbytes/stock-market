@@ -24,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaConfiguration {
     private final KafkaProperties kafkaProperties;
+    private final KafkaTopics kafkaTopics;
 
     public ProducerFactory<String, IntegrationEvent> producerFactory() {
         Map<String, Object> configurationProperties = new HashMap<>(kafkaProperties.buildProducerProperties());
@@ -52,11 +53,11 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic stockCreatedTopic() {
-        return new NewTopic("stock-created", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockCreated(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic stockPriceChangesTopic() {
-        return new NewTopic("stock-price-changes", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockPriceChange(), 1, (short) 1);
     }
 }

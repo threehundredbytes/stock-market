@@ -24,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaConfiguration {
     private final KafkaProperties kafkaProperties;
+    private final KafkaTopics kafkaTopics;
 
     public ProducerFactory<String, IntegrationEvent> producerFactory() {
         Map<String, Object> configurationProperties = new HashMap<>(kafkaProperties.buildProducerProperties());
@@ -51,32 +52,37 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public NewTopic orderCreatedTopic() {
-        return new NewTopic("order-created", 1, (short) 1);
+    public NewTopic accountCreatedTopic() {
+        return new NewTopic(kafkaTopics.getAccountCreated(), 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic orderClosedTopic() {
+        return new NewTopic(kafkaTopics.getOrderClosed(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic orderConfirmedTopic() {
-        return new NewTopic("order-confirmed", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getOrderConfirmed(), 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic orderCreatedTopic() {
+        return new NewTopic(kafkaTopics.getOrderCreated(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic orderRejectedTopic() {
-        return new NewTopic("order-rejected", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getOrderRejected(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic stockCreatedTopic() {
-        return new NewTopic("stock-created", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockCreated(), 1, (short) 1);
     }
 
     @Bean
     public NewTopic stockPriceChangesTopic() {
-        return new NewTopic("stock-price-changes", 1, (short) 1);
-    }
-
-    @Bean
-    public NewTopic accountCreatedTopic() {
-        return new NewTopic("account-created", 1, (short) 1);
+        return new NewTopic(kafkaTopics.getStockPriceChange(), 1, (short) 1);
     }
 }

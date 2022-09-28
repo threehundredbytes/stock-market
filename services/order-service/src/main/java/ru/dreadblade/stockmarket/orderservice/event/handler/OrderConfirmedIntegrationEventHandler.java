@@ -15,7 +15,7 @@ import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
 public class OrderConfirmedIntegrationEventHandler implements IntegrationEventHandler<OrderConfirmedIntegrationEvent> {
     private final OrderRepository orderRepository;
 
-    @KafkaListener(groupId = "order-service-group", topics = "order-confirmed")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-confirmed}")
     @Override
     public void handleIntegrationEvent(OrderConfirmedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

@@ -1,4 +1,7 @@
 app:
+  kafka:
+    consumer:
+      group: stock-price-service-group
   redis:
     host: localhost
     port: 6379

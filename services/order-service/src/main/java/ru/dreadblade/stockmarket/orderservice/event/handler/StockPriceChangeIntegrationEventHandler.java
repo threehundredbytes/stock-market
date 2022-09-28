@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.OrderStatus;
 import ru.dreadblade.stockmarket.orderservice.event.OrderClosedIntegrationEvent;
@@ -19,9 +20,10 @@ import java.time.Instant;
 @Slf4j
 public class StockPriceChangeIntegrationEventHandler implements IntegrationEventHandler<StockPriceChangeIntegrationEvent> {
     private final OrderRepository orderRepository;
+    private final KafkaTopics kafkaTopics;
     private final EventBus eventBus;
 
-    @KafkaListener(groupId = "order-service-group", topics = "stock-price-change")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.stock-price-change}")
     @Override
     public void handleIntegrationEvent(StockPriceChangeIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
@@ -75,6 +77,6 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
                 .userId(order.getAccount().getOwnerId())
                 .build();
 
-        eventBus.publish("order-closed", orderClosedIntegrationEvent);
+        eventBus.publish(kafkaTopics.getOrderClosed(), orderClosedIntegrationEvent);
     }
 }

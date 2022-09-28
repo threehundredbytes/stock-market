@@ -1,4 +1,7 @@
 app:
+  kafka:
+    consumer:
+      group: stock-price-history-service-group
   mongodb:
     host: localhost
     port: 27017

@@ -25,7 +25,7 @@ public class OrderClosedIntegrationEventHandler implements IntegrationEventHandl
     private final StockOnAccountRepository stockOnAccountRepository;
     private final StockRepository stockRepository;
 
-    @KafkaListener(groupId = "account-service-group", topics = "order-closed")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-closed}")
     @Override
     public void handleIntegrationEvent(OrderClosedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

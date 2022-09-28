@@ -17,7 +17,7 @@ import java.time.Instant;
 public class OrderRejectedIntegrationEventHandler implements IntegrationEventHandler<OrderRejectedIntegrationEvent> {
     private final OrderRepository orderRepository;
 
-    @KafkaListener(groupId = "order-service-group", topics = "order-rejected")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-rejected}")
     @Override
     public void handleIntegrationEvent(OrderRejectedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

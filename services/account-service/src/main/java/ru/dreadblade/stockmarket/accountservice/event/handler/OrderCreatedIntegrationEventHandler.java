@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import ru.dreadblade.stockmarket.accountservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.accountservice.domain.Account;
 import ru.dreadblade.stockmarket.accountservice.domain.Stock;
 import ru.dreadblade.stockmarket.accountservice.domain.StockOnAccount;
@@ -30,7 +31,9 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
     private final StockRepository stockRepository;
     private final EventBus eventBus;
 
-    @KafkaListener(groupId = "account-service-group", topics = "order-created")
+    private final KafkaTopics kafkaTopics;
+
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-created}")
     @Override
     public void handleIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
@@ -51,9 +54,9 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
 
                 accountRepository.save(account);
 
-                eventBus.publish("order-confirmed", mapToOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
+                eventBus.publish(kafkaTopics.getOrderConfirmed(), getOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
             } else {
-                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
+                eventBus.publish(kafkaTopics.getOrderRejected(), getOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
             }
         }
 
@@ -63,7 +66,7 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
             Optional<StockOnAccount> stockOnAccountOptional = stockOnAccountRepository.findByAccountAndStock(account, stock);
 
             if (stockOnAccountOptional.isEmpty()) {
-                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
+                eventBus.publish(kafkaTopics.getOrderRejected(), getOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
 
                 return;
             }
@@ -77,14 +80,14 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
 
                 stockOnAccountRepository.save(stockOnAccount);
 
-                eventBus.publish("order-confirmed", mapToOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
+                eventBus.publish(kafkaTopics.getOrderConfirmed(), getOrderConfirmedIntegrationEvent(integrationEvent, orderPrice, userId));
             } else {
-                eventBus.publish("order-rejected", mapToOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
+                eventBus.publish(kafkaTopics.getOrderRejected(), getOrderRejectedIntegrationEvent(integrationEvent, orderPrice, userId));
             }
         }
     }
 
-    private OrderConfirmedIntegrationEvent mapToOrderConfirmedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
+    private OrderConfirmedIntegrationEvent getOrderConfirmedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
         return OrderConfirmedIntegrationEvent.builder()
                 .orderId(integrationEvent.getOrderId())
                 .orderPrice(orderPrice)
@@ -94,7 +97,7 @@ public class OrderCreatedIntegrationEventHandler implements IntegrationEventHand
                 .build();
     }
 
-    private OrderRejectedIntegrationEvent mapToOrderRejectedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
+    private OrderRejectedIntegrationEvent getOrderRejectedIntegrationEvent(OrderCreatedIntegrationEvent integrationEvent, BigDecimal orderPrice, String userId) {
         return OrderRejectedIntegrationEvent.builder()
                 .orderId(integrationEvent.getOrderId())
                 .orderPrice(orderPrice)

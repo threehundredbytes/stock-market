@@ -1,4 +1,7 @@
 app:
+  kafka:
+    consumer:
+      group: order-service-group
   postgresql:
     host: localhost
     port: 5434

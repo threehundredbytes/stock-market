@@ -14,6 +14,15 @@ app:
   kafka:
     host: localhost
     port: 9092
+    topic:
+      account-created: account-created
+      order-closed: order-closed
+      order-confirmed: order-confirmed
+      order-created: order-created
+      order-rejected: order-rejected
+      payment-created: payment-created
+      stock-created: stock-created
+      stock-price-change: stock-price-change
   eureka:
     protocol: http
     host: localhost

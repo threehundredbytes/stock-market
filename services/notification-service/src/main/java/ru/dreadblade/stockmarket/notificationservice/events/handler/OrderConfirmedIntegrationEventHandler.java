@@ -13,7 +13,7 @@ import ru.dreadblade.stockmarket.notificationservice.events.OrderConfirmedIntegr
 public class OrderConfirmedIntegrationEventHandler implements IntegrationEventHandler<OrderConfirmedIntegrationEvent> {
     private final SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(groupId = "notification-service-group", topics = "order-confirmed")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.order-confirmed}")
     @Override
     public void handleIntegrationEvent(OrderConfirmedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

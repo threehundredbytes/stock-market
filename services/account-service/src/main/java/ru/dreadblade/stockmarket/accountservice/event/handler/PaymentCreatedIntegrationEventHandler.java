@@ -19,7 +19,7 @@ public class PaymentCreatedIntegrationEventHandler implements IntegrationEventHa
 
     private final AccountRepository accountRepository;
 
-    @KafkaListener(groupId = "account-service-group", topics = "payment-created")
+    @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.payment-created}")
     @Override
     public void handleIntegrationEvent(PaymentCreatedIntegrationEvent integrationEvent) {
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.orderservice.api.mapper.OrderMapper;
+import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.orderservice.domain.Account;
 import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.Stock;
@@ -24,8 +25,11 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
     private final AccountRepository accountRepository;
-    private final OrderMapper orderMapper;
+
+    private final KafkaTopics kafkaTopics;
     private final EventBus eventBus;
+
+    private final OrderMapper orderMapper;
 
     public List<OrderResponseDTO> findAllByAccountId(Long accountId, String userId) {
         Account account = accountRepository.findById(accountId)
@@ -72,7 +76,7 @@ public class OrderService {
                 .orderType(order.getOrderType())
                 .build();
 
-        eventBus.publish("order-created", orderCreatedIntegrationEvent);
+        eventBus.publish(kafkaTopics.getOrderCreated(), orderCreatedIntegrationEvent);
 
         return orderMapper.mapEntityToResponseDTO(order);
     }
