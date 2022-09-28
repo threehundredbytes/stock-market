@@ -2,8 +2,10 @@ package ru.dreadblade.stockmarket.stockservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.dreadblade.stockmarket.stockservice.api.mapper.StockMapper;
+import ru.dreadblade.stockmarket.stockservice.api.model.StockResponseDTO;
 import ru.dreadblade.stockmarket.stockservice.domain.Stock;
-import ru.dreadblade.stockmarket.stockservice.dto.StockRequestDTO;
+import ru.dreadblade.stockmarket.stockservice.api.model.StockRequestDTO;
 import ru.dreadblade.stockmarket.stockservice.event.StockCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.stockservice.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
@@ -14,18 +16,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockService {
     private final StockRepository stockRepository;
+    private final StockMapper stockMapper;
     private final EventBus eventBus;
 
-    public List<Stock> findAll() {
-        return stockRepository.findAll();
+    public List<StockResponseDTO> findAll() {
+        return stockRepository.findAll().stream()
+                .map(stockMapper::mapEntityToResponseDTO)
+                .toList();
     }
 
-    public Stock addStock(StockRequestDTO stockRequestDTO) {
-        Stock stock = stockRepository.save(Stock.builder()
-                .name(stockRequestDTO.name())
-                .ticker(stockRequestDTO.ticker())
-                .price(stockRequestDTO.price())
-                .build());
+    public StockResponseDTO addStock(StockRequestDTO stockRequestDTO) {
+        Stock stock = stockRepository.save(stockMapper.mapRequestDtoToEntity(stockRequestDTO));
 
         StockCreatedIntegrationEvent stockCreatedIntegrationEvent = StockCreatedIntegrationEvent.builder()
                 .stockId(stock.getId())
@@ -36,6 +37,6 @@ public class StockService {
 
         eventBus.publish("stock-created", stockCreatedIntegrationEvent);
 
-        return stock;
+        return stockMapper.mapEntityToResponseDTO(stock);
     }
 }

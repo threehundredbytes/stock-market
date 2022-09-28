@@ -5,13 +5,14 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.dreadblade.stockmarket.paymentservice.api.mapper.PaymentMapper;
 import ru.dreadblade.stockmarket.paymentservice.domain.Account;
 import ru.dreadblade.stockmarket.paymentservice.domain.Payment;
 import ru.dreadblade.stockmarket.paymentservice.domain.PaymentStatus;
 import ru.dreadblade.stockmarket.paymentservice.event.PaymentCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.paymentservice.event.bus.EventBus;
-import ru.dreadblade.stockmarket.paymentservice.model.PaymentRequestDTO;
-import ru.dreadblade.stockmarket.paymentservice.model.PaymentResponseDTO;
+import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentRequestDTO;
+import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentResponseDTO;
 import ru.dreadblade.stockmarket.paymentservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.paymentservice.repository.PaymentRepository;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
+    private final PaymentMapper paymentMapper;
     private final EventBus eventBus;
 
     public List<PaymentResponseDTO> findAllByAccountId(Long accountId, String userId) {
@@ -33,12 +35,12 @@ public class PaymentService {
         }
 
         return paymentRepository.findAllByAccount(account).stream()
-                .map(PaymentResponseDTO::map)
+                .map(paymentMapper::mapEntityToResponseDTO)
                 .toList();
     }
 
     public PaymentResponseDTO createPayment(PaymentRequestDTO requestDTO, String userId) {
-        Account account = accountRepository.findById(requestDTO.getAccountId())
+        Account account = accountRepository.findById(requestDTO.accountId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!userId.equals(account.getOwnerId())) {
@@ -48,7 +50,7 @@ public class PaymentService {
         PaymentStatus paymentStatus = RandomUtils.nextInt(100) <= 75 ? PaymentStatus.SUCCESS : PaymentStatus.FAILED;
 
         Payment payment = Payment.builder()
-                .amount(requestDTO.getAmount())
+                .amount(requestDTO.amount())
                 .account(account)
                 .paymentStatus(paymentStatus)
                 .build();
@@ -63,6 +65,6 @@ public class PaymentService {
 
         eventBus.publish("payment-created", event);
 
-        return PaymentResponseDTO.map(payment);
+        return paymentMapper.mapEntityToResponseDTO(payment);
     }
 }

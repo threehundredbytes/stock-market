@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.dreadblade.stockmarket.accountservice.api.mapper.AccountMapper;
+import ru.dreadblade.stockmarket.accountservice.api.mapper.StockOnAccountMapper;
 import ru.dreadblade.stockmarket.accountservice.domain.Account;
 import ru.dreadblade.stockmarket.accountservice.event.AccountCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.accountservice.event.bus.EventBus;
-import ru.dreadblade.stockmarket.accountservice.model.AccountResponseDTO;
-import ru.dreadblade.stockmarket.accountservice.model.StockOnAccountResponseDTO;
+import ru.dreadblade.stockmarket.accountservice.api.model.AccountResponseDTO;
+import ru.dreadblade.stockmarket.accountservice.api.model.StockOnAccountResponseDTO;
 import ru.dreadblade.stockmarket.accountservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockOnAccountRepository;
 
@@ -21,13 +23,12 @@ public class AccountService {
     private final StockOnAccountRepository stockOnAccountRepository;
     private final EventBus eventBus;
 
+    private final AccountMapper accountMapper;
+    private final StockOnAccountMapper stockOnAccountMapper;
+
     public List<AccountResponseDTO> findAllByOwnerId(String ownerId) {
         return accountRepository.findAllByOwnerId(ownerId).stream()
-                .map(account -> AccountResponseDTO.builder()
-                        .id(account.getId())
-                        .balance(account.getBalance())
-                        .reservedBalance(account.getReservedBalance())
-                        .build())
+                .map(accountMapper::mapEntityToResponseDTO)
                 .toList();
     }
 
@@ -40,15 +41,11 @@ public class AccountService {
         }
 
         return stockOnAccountRepository.findAllByAccount(account).stream()
-                .map(stockOnAccount -> StockOnAccountResponseDTO.builder()
-                        .stockId(stockOnAccount.getStock().getId())
-                        .quantity(stockOnAccount.getQuantity())
-                        .reservedQuantity(stockOnAccount.getReservedQuantity())
-                        .build())
+                .map(stockOnAccountMapper::mapEntityToResponseDTO)
                 .toList();
     }
 
-    public Account createAccount(String ownerId) {
+    public AccountResponseDTO createAccount(String ownerId) {
         Account account = Account.builder()
                 .ownerId(ownerId)
                 .build();
@@ -62,6 +59,6 @@ public class AccountService {
 
         eventBus.publish("account-created", accountCreatedIntegrationEvent);
 
-        return account;
+        return accountMapper.mapEntityToResponseDTO(account);
     }
 }

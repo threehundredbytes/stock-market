@@ -12,6 +12,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class StockPrice implements Serializable {
     private Long stockId;
-
     private BigDecimal price;
 }

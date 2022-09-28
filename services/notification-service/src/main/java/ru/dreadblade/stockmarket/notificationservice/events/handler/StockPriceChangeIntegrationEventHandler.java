@@ -7,7 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.notificationservice.domain.Stock;
 import ru.dreadblade.stockmarket.notificationservice.events.StockPriceChangeIntegrationEvent;
-import ru.dreadblade.stockmarket.notificationservice.model.NotificationMessageDTO;
+import ru.dreadblade.stockmarket.notificationservice.api.model.NotificationMessageDTO;
 import ru.dreadblade.stockmarket.notificationservice.repository.NotificationRepository;
 import ru.dreadblade.stockmarket.notificationservice.repository.StockRepository;
 
@@ -35,10 +35,7 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
 
         notificationRepository.findAllActiveNotificationsByStockIdAndPriceBetween(stockId, currentPrice, newPrice)
                 .forEach(notification -> {
-                    var notificationMessageDTO = NotificationMessageDTO.builder()
-                            .stockTicker(notification.getStock().getTicker())
-                            .pricePerStock(notification.getAtPrice())
-                            .build();
+                    var notificationMessageDTO = new NotificationMessageDTO(stock.getTicker(), notification.getAtPrice());
 
                     messagingTemplate.convertAndSendToUser(notification.getUserId(), "/topic/notifications/stocks/prices", notificationMessageDTO);
 
