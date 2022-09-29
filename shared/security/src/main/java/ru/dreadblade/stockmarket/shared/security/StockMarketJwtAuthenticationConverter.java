@@ -1,4 +1,4 @@
-package ru.dreadblade.stockmarket.stockservice.security;
+package ru.dreadblade.stockmarket.shared.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;

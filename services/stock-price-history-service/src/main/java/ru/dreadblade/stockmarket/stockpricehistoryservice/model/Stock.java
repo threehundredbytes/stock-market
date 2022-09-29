@@ -1,4 +1,4 @@
-package ru.dreadblade.stockmarket.stockpricehistoryservice.domain;
+package ru.dreadblade.stockmarket.stockpricehistoryservice.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

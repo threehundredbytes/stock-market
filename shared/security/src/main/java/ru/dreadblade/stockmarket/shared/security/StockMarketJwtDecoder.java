@@ -1,4 +1,4 @@
-package ru.dreadblade.stockmarket.notificationservice.security;
+package ru.dreadblade.stockmarket.shared.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.Stock;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.Stock;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.event.StockPriceChangeIntegrationEvent;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockRepository;
 

@@ -1,4 +1,4 @@
-package ru.dreadblade.stockmarket.stockpricehistoryservice.domain.key;
+package ru.dreadblade.stockmarket.stockpricehistoryservice.model.key;
 
 import lombok.*;
 

@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.dreadblade.stockmarket.paymentservice.security.StockMarketJwtAuthenticationConverter;
-import ru.dreadblade.stockmarket.paymentservice.security.StockMarketJwtDecoder;
+import ru.dreadblade.stockmarket.shared.security.StockMarketJwtAuthenticationConverter;
+import ru.dreadblade.stockmarket.shared.security.StockMarketJwtDecoder;
 
 @Configuration
 @EnableMethodSecurity

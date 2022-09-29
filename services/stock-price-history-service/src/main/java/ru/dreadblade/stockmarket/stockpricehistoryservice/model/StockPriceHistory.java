@@ -1,9 +1,9 @@
-package ru.dreadblade.stockmarket.stockpricehistoryservice.domain;
+package ru.dreadblade.stockmarket.stockpricehistoryservice.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.key.StockPriceHistoryCompositeKey;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.key.StockPriceHistoryCompositeKey;
 
 import java.math.BigDecimal;
 
