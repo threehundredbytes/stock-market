@@ -6,16 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.paymentservice.api.mapper.PaymentMapper;
+import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentRequestDTO;
+import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentResponseDTO;
 import ru.dreadblade.stockmarket.paymentservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.paymentservice.domain.Account;
 import ru.dreadblade.stockmarket.paymentservice.domain.Payment;
 import ru.dreadblade.stockmarket.paymentservice.domain.PaymentStatus;
 import ru.dreadblade.stockmarket.paymentservice.event.PaymentCreatedIntegrationEvent;
-import ru.dreadblade.stockmarket.paymentservice.event.bus.EventBus;
-import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentRequestDTO;
-import ru.dreadblade.stockmarket.paymentservice.api.model.PaymentResponseDTO;
 import ru.dreadblade.stockmarket.paymentservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.paymentservice.repository.PaymentRepository;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
 import java.util.List;
 

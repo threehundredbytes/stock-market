@@ -2,12 +2,12 @@ package ru.dreadblade.stockmarket.stockservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockservice.api.mapper.StockMapper;
+import ru.dreadblade.stockmarket.stockservice.api.model.StockRequestDTO;
 import ru.dreadblade.stockmarket.stockservice.api.model.StockResponseDTO;
 import ru.dreadblade.stockmarket.stockservice.domain.Stock;
-import ru.dreadblade.stockmarket.stockservice.api.model.StockRequestDTO;
 import ru.dreadblade.stockmarket.stockservice.event.StockCreatedIntegrationEvent;
-import ru.dreadblade.stockmarket.stockservice.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockservice.repository.StockRepository;
 
 import java.util.List;

@@ -1,4 +1,7 @@
 app:
+  client:
+    stock-market-ng-app:
+      uri: http://localhost:4200
   auth-server:
     protocol: http
     host: localhost

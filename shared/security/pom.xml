@@ -12,7 +12,6 @@
 	<name>security</name>
 	<description>security</description>
 	<artifactId>security</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
@@ -33,13 +32,4 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>

@@ -37,6 +37,11 @@
 
 		<dependency>
 			<groupId>ru.dreadblade.stockmarket.shared</groupId>
+			<artifactId>integration-event</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ru.dreadblade.stockmarket.shared</groupId>
 			<artifactId>security</artifactId>
 			<version>${project.version}</version>
 		</dependency>

@@ -8,6 +8,7 @@ import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.OrderStatus;
 import ru.dreadblade.stockmarket.orderservice.event.OrderConfirmedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 @Component
 @RequiredArgsConstructor

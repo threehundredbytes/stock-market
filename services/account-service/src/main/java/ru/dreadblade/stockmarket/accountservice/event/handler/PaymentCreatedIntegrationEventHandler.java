@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.accountservice.domain.Account;
 import ru.dreadblade.stockmarket.accountservice.event.PaymentCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.accountservice.repository.AccountRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 

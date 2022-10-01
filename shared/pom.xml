@@ -17,6 +17,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>integration-event</module>
 		<module>security</module>
 	</modules>
 </project>

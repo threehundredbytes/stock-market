@@ -1,19 +1,20 @@
-package ru.dreadblade.stockmarket.stockpriceservice.event;
+package ru.dreadblade.stockmarket.shared.event;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public abstract class IntegrationEvent {
     private final UUID id;
     private final Instant createdAt;
 
     public IntegrationEvent() {
-        id = UUID.randomUUID();
-        createdAt = Instant.now();
+        this(UUID.randomUUID(), Instant.now());
     }
 }

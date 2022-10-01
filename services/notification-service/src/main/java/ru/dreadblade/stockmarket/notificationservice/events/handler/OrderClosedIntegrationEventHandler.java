@@ -6,6 +6,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.notificationservice.events.OrderClosedIntegrationEvent;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 @Component
 @RequiredArgsConstructor

@@ -11,6 +11,7 @@ import ru.dreadblade.stockmarket.accountservice.event.OrderClosedIntegrationEven
 import ru.dreadblade.stockmarket.accountservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockOnAccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 

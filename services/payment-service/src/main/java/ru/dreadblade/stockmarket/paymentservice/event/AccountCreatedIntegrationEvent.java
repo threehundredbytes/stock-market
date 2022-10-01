@@ -2,6 +2,7 @@ package ru.dreadblade.stockmarket.paymentservice.event;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.dreadblade.stockmarket.shared.event.IntegrationEvent;
 
 @Getter
 @Setter

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.paymentservice.domain.Account;
 import ru.dreadblade.stockmarket.paymentservice.event.AccountCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.paymentservice.repository.AccountRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 @Component
 @RequiredArgsConstructor

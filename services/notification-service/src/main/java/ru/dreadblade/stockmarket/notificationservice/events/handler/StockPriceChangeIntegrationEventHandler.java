@@ -5,11 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import ru.dreadblade.stockmarket.notificationservice.api.model.NotificationMessageDTO;
 import ru.dreadblade.stockmarket.notificationservice.domain.Stock;
 import ru.dreadblade.stockmarket.notificationservice.events.StockPriceChangeIntegrationEvent;
-import ru.dreadblade.stockmarket.notificationservice.api.model.NotificationMessageDTO;
 import ru.dreadblade.stockmarket.notificationservice.repository.NotificationRepository;
 import ru.dreadblade.stockmarket.notificationservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 

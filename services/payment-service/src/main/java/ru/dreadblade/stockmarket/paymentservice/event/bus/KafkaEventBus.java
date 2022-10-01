@@ -3,7 +3,8 @@ package ru.dreadblade.stockmarket.paymentservice.event.bus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import ru.dreadblade.stockmarket.paymentservice.event.IntegrationEvent;
+import ru.dreadblade.stockmarket.shared.event.IntegrationEvent;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
 @Component
 @RequiredArgsConstructor

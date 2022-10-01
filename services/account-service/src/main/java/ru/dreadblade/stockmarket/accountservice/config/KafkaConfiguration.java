@@ -15,7 +15,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.dreadblade.stockmarket.accountservice.event.IntegrationEvent;
+import ru.dreadblade.stockmarket.shared.event.IntegrationEvent;
 
 import java.util.HashMap;
 import java.util.Map;
