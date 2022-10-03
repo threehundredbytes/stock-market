@@ -11,10 +11,8 @@
 	<artifactId>user-service</artifactId>
 	<name>user-service</name>
 	<description>user-service</description>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<java.version>17</java.version>
 		<keycloak.version>19.0.0</keycloak.version>
 	</properties>
 

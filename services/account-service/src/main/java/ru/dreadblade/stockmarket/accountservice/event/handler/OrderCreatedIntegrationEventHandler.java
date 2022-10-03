@@ -11,10 +11,11 @@ import ru.dreadblade.stockmarket.accountservice.domain.StockOnAccount;
 import ru.dreadblade.stockmarket.accountservice.event.OrderConfirmedIntegrationEvent;
 import ru.dreadblade.stockmarket.accountservice.event.OrderCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.accountservice.event.OrderRejectedIntegrationEvent;
-import ru.dreadblade.stockmarket.accountservice.event.bus.EventBus;
 import ru.dreadblade.stockmarket.accountservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockOnAccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 import java.util.Optional;

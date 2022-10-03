@@ -12,10 +12,6 @@
 	<name>stock-price-history-service</name>
 	<description>stock-price-history-service</description>
 
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -33,6 +29,12 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ru.dreadblade.stockmarket.shared</groupId>
+			<artifactId>integration-event</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

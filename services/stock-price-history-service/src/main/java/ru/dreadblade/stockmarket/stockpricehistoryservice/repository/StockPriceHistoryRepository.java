@@ -1,8 +1,8 @@
 package ru.dreadblade.stockmarket.stockpricehistoryservice.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.StockPriceHistory;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.key.StockPriceHistoryCompositeKey;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.StockPriceHistory;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.key.StockPriceHistoryCompositeKey;
 
 import java.util.List;
 

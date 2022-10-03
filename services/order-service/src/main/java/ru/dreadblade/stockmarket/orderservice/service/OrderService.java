@@ -5,17 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.orderservice.api.mapper.OrderMapper;
+import ru.dreadblade.stockmarket.orderservice.api.model.OrderRequestDTO;
+import ru.dreadblade.stockmarket.orderservice.api.model.OrderResponseDTO;
 import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.orderservice.domain.Account;
 import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.Stock;
 import ru.dreadblade.stockmarket.orderservice.event.OrderCreatedIntegrationEvent;
-import ru.dreadblade.stockmarket.orderservice.event.bus.EventBus;
-import ru.dreadblade.stockmarket.orderservice.api.model.OrderRequestDTO;
-import ru.dreadblade.stockmarket.orderservice.api.model.OrderResponseDTO;
 import ru.dreadblade.stockmarket.orderservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
 import ru.dreadblade.stockmarket.orderservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
 import java.util.List;
 

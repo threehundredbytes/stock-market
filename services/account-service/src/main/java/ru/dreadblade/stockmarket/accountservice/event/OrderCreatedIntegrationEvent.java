@@ -3,6 +3,7 @@ package ru.dreadblade.stockmarket.accountservice.event;
 import lombok.Getter;
 import lombok.Setter;
 import ru.dreadblade.stockmarket.accountservice.event.model.OrderType;
+import ru.dreadblade.stockmarket.shared.event.IntegrationEvent;
 
 import java.math.BigDecimal;
 

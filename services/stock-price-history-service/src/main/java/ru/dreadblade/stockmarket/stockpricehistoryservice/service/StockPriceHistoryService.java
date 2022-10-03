@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.api.mapper.StockPriceHistoryMapper;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.api.model.StockPriceHistoryResponseDTO;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.StockPriceHistory;
-import ru.dreadblade.stockmarket.stockpricehistoryservice.domain.key.StockPriceHistoryCompositeKey;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.StockPriceHistory;
+import ru.dreadblade.stockmarket.stockpricehistoryservice.model.key.StockPriceHistoryCompositeKey;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockPriceHistoryRepository;
 import ru.dreadblade.stockmarket.stockpricehistoryservice.repository.StockRepository;
 

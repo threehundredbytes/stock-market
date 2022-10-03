@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockpriceservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.stockpriceservice.event.StockPriceChangeIntegrationEvent;
-import ru.dreadblade.stockmarket.stockpriceservice.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockpriceservice.repository.StockRepository;
 
 import java.math.BigDecimal;

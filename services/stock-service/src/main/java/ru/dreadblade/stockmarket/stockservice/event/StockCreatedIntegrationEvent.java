@@ -1,6 +1,9 @@
 package ru.dreadblade.stockmarket.stockservice.event;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import ru.dreadblade.stockmarket.shared.event.IntegrationEvent;
 
 import java.math.BigDecimal;
 import java.time.Instant;

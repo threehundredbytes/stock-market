@@ -9,8 +9,9 @@ import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.OrderStatus;
 import ru.dreadblade.stockmarket.orderservice.event.OrderClosedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.event.StockPriceChangeIntegrationEvent;
-import ru.dreadblade.stockmarket.orderservice.event.bus.EventBus;
 import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 import java.time.Instant;

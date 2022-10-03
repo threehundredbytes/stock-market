@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.orderservice.domain.Stock;
 import ru.dreadblade.stockmarket.orderservice.event.StockCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.repository.StockRepository;
+import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 @Component
 @RequiredArgsConstructor

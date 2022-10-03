@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.accountservice.api.mapper.AccountMapper;
 import ru.dreadblade.stockmarket.accountservice.api.mapper.StockOnAccountMapper;
+import ru.dreadblade.stockmarket.accountservice.api.model.AccountResponseDTO;
+import ru.dreadblade.stockmarket.accountservice.api.model.StockOnAccountResponseDTO;
 import ru.dreadblade.stockmarket.accountservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.accountservice.domain.Account;
 import ru.dreadblade.stockmarket.accountservice.event.AccountCreatedIntegrationEvent;
-import ru.dreadblade.stockmarket.accountservice.event.bus.EventBus;
-import ru.dreadblade.stockmarket.accountservice.api.model.AccountResponseDTO;
-import ru.dreadblade.stockmarket.accountservice.api.model.StockOnAccountResponseDTO;
 import ru.dreadblade.stockmarket.accountservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.accountservice.repository.StockOnAccountRepository;
+import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
 import java.util.List;
 
