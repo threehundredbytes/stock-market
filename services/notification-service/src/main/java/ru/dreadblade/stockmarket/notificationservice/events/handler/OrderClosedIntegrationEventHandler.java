@@ -20,6 +20,6 @@ public class OrderClosedIntegrationEventHandler implements IntegrationEventHandl
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
-        simpMessagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/orders/closed", integrationEvent);
+        simpMessagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/notifications/orders/closed", integrationEvent);
     }
 }

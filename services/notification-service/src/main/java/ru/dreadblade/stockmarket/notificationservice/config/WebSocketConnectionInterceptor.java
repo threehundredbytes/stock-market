@@ -28,13 +28,16 @@ public class WebSocketConnectionInterceptor implements ChannelInterceptor {
         if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
             List<String> authorizationHeader = accessor.getNativeHeader(HttpHeaders.AUTHORIZATION);
 
-            String accessToken = authorizationHeader.get(0).split(" ")[1];
-            var jwt = jwtDecoder.decode(accessToken);
+            if (authorizationHeader != null && !authorizationHeader.isEmpty()) {
+                String accessToken = authorizationHeader.get(0).split(" ")[1];
 
-            JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-            converter.setPrincipalClaimName(JWTClaimNames.SUBJECT);
-            Authentication authentication = converter.convert(jwt);
-            accessor.setUser(authentication);
+                var jwt = jwtDecoder.decode(accessToken);
+
+                JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+                converter.setPrincipalClaimName(JWTClaimNames.SUBJECT);
+                Authentication authentication = converter.convert(jwt);
+                accessor.setUser(authentication);
+            }
         }
 
         return message;

@@ -20,6 +20,6 @@ public class OrderConfirmedIntegrationEventHandler implements IntegrationEventHa
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
-        messagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/orders/confirmed", integrationEvent);
+        messagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/notifications/orders/confirmed", integrationEvent);
     }
 }

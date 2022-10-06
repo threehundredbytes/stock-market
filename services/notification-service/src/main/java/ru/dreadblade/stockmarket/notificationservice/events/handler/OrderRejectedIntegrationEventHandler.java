@@ -20,6 +20,6 @@ public class OrderRejectedIntegrationEventHandler implements IntegrationEventHan
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
-        messagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/orders/rejected", integrationEvent);
+        messagingTemplate.convertAndSendToUser(integrationEvent.getUserId(), "/topic/notifications/orders/rejected", integrationEvent);
     }
 }

@@ -22,6 +22,11 @@ public class StockController {
         return stockService.findAll();
     }
 
+    @GetMapping("/{stockId}")
+    public StockResponseDTO findById(@PathVariable Long stockId) {
+        return stockService.findById(stockId);
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('business')")
     @ResponseStatus(HttpStatus.CREATED)
