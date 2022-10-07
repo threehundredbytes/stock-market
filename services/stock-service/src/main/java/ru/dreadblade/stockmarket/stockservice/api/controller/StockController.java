@@ -22,9 +22,9 @@ public class StockController {
         return stockService.findAll();
     }
 
-    @GetMapping("/{stockId}")
-    public StockResponseDTO findById(@PathVariable Long stockId) {
-        return stockService.findById(stockId);
+    @GetMapping("/{stockIds}")
+    public List<StockResponseDTO> findByIds(@PathVariable List<Long> stockIds) {
+        return stockService.findByIds(stockIds);
     }
 
     @PostMapping

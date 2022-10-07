@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByAccount(Account account);
+    List<Order> findAllByStockIdAndAccountOwnerId(Long stockId, String userId);
 
     @Query(
             "select o from Order as o " +

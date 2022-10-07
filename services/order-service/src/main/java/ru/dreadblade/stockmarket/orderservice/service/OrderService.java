@@ -44,6 +44,12 @@ public class OrderService {
                 .toList();
     }
 
+    public List<OrderResponseDTO> findAllByStockId(Long stockId, String userId) {
+        return orderRepository.findAllByStockIdAndAccountOwnerId(stockId, userId).stream()
+                .map(orderMapper::mapEntityToResponseDTO)
+                .toList();
+    }
+
     public OrderResponseDTO placeOrder(OrderRequestDTO requestDTO, String userId) {
         Account account = accountRepository.findById(requestDTO.accountId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

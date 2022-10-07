@@ -12,7 +12,7 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
         messages
                 .simpTypeMatchers(SimpMessageType.CONNECT, SimpMessageType.UNSUBSCRIBE, SimpMessageType.DISCONNECT).permitAll()
                 .simpSubscribeDestMatchers("/topic/stocks/*/prices").permitAll()
-                .simpSubscribeDestMatchers("/topic/notifications/**").authenticated()
+                .simpSubscribeDestMatchers("/user/topic/notifications/**").authenticated()
                 .anyMessage().denyAll();
     }
 

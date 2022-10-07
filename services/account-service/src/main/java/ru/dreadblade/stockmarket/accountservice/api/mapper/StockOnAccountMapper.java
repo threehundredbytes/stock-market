@@ -8,6 +8,6 @@ import ru.dreadblade.stockmarket.accountservice.domain.StockOnAccount;
 public class StockOnAccountMapper {
     public StockOnAccountResponseDTO mapEntityToResponseDTO(StockOnAccount stockOnAccount) {
         return new StockOnAccountResponseDTO(stockOnAccount.getStock().getId(), stockOnAccount.getQuantity(),
-                stockOnAccount.getReservedQuantity());
+                stockOnAccount.getReservedQuantity(), stockOnAccount.getPurchasedAt());
     }
 }

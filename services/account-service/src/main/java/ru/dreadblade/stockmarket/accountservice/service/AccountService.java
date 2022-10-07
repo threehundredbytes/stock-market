@@ -35,6 +35,17 @@ public class AccountService {
                 .toList();
     }
 
+    public AccountResponseDTO findByAccountId(Long accountId, String userId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!userId.equals(account.getOwnerId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return accountMapper.mapEntityToResponseDTO(account);
+    }
+
     public List<StockOnAccountResponseDTO> findAllStocksOnAccount(Long accountId, String userId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

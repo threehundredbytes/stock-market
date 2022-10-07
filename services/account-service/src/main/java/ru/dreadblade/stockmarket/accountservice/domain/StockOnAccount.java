@@ -1,8 +1,10 @@
 package ru.dreadblade.stockmarket.accountservice.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -26,4 +28,7 @@ public class StockOnAccount {
 
     @Builder.Default
     private Long reservedQuantity = 0L;
+
+    @CreationTimestamp
+    private Instant purchasedAt;
 }

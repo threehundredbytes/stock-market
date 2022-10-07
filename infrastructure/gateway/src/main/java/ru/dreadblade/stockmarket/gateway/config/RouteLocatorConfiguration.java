@@ -13,13 +13,13 @@ public class RouteLocatorConfiguration {
     private final static String API_PATH = "/api/v1";
     private final static String COOKIE_HEADER_NAME = "Cookie";
 
-    private final static String[] ACCOUNT_SERVICE_PATH = { "/api/v1/accounts", "/api/v1/accounts/{accountId}/stocks" };
+    private final static String[] ACCOUNT_SERVICE_PATH = { "/api/v1/accounts", "/api/v1/accounts/{accountId}", "/api/v1/accounts/{accountId}/stocks" };
     private final static String[] NOTIFICATION_SERVICE_PATH = { "/api/v1/notifications", "/api/v1/notifications/{notificationId}", "/connect" };
-    private final static String[] ORDER_SERVICE_PATH = { "/api/v1/orders", "/api/v1/accounts/{accountId}/orders"};
+    private final static String[] ORDER_SERVICE_PATH = { "/api/v1/orders", "/api/v1/orders/stocks/{stockId}", "/api/v1/accounts/{accountId}/orders" };
     private final static String[] PAYMENT_SERVICE_PATH = { "/api/v1/payments", "/api/v1/accounts/{accountId}/payments" };
 
     private final static String[] STOCK_PRICE_HISTORY_SERVICE_PATH = { "/api/v1/stocks/{stockId}/history" };
-    private final static String[] STOCK_SERVICE_PATH = { "/api/v1/stocks", "/api/v1/stocks/{stockId}" };
+    private final static String[] STOCK_SERVICE_PATH = { "/api/v1/stocks", "/api/v1/stocks/{stockIds}" };
     private final static String[] USER_SERVICE_PATH = { "/api/v1/auth/signup" };
 
     private final StockMarketServices stockMarketServices;

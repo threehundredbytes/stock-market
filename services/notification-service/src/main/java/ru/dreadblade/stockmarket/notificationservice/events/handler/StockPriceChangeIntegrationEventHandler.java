@@ -34,6 +34,9 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
         BigDecimal currentPrice = stock.getPrice();
         BigDecimal newPrice = integrationEvent.getNewPrice();
 
+        stock.setPrice(newPrice);
+        stockRepository.save(stock);
+
         messagingTemplate.convertAndSend("/topic/stocks/" + integrationEvent.getStockId() + "/prices", integrationEvent);
 
         notificationRepository.findAllActiveNotificationsByStockIdAndPriceBetween(stockId, currentPrice, newPrice)

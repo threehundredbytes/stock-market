@@ -12,7 +12,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findAllByUserIdAndIsActive(String userId, Boolean isActive);
 
     @Query("select n from Notification as n " +
-            "where n.atPrice between :current_price and :new_price " +
+            "where n.atPrice >= :current_price and n.atPrice <= :new_price " +
+            "or n.atPrice <= :current_price and n.atPrice >= :new_price " +
             "and n.isActive = true and n.stock.id = :stock_id")
     List<Notification> findAllActiveNotificationsByStockIdAndPriceBetween(@Param("stock_id") Long stockId,
                                                        @Param("current_price") BigDecimal currentPrice,

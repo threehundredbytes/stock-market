@@ -1,9 +1,7 @@
 package ru.dreadblade.stockmarket.stockservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 import ru.dreadblade.stockmarket.stockservice.api.mapper.StockMapper;
 import ru.dreadblade.stockmarket.stockservice.api.model.StockRequestDTO;
@@ -27,9 +25,10 @@ public class StockService {
                 .toList();
     }
 
-    public StockResponseDTO findById(Long stockId) {
-        return stockRepository.findById(stockId).map(stockMapper::mapEntityToResponseDTO)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public List<StockResponseDTO> findByIds(List<Long> stockIds) {
+        return stockRepository.findAllByIdIn(stockIds)
+                .stream().map(stockMapper::mapEntityToResponseDTO)
+                .toList();
     }
 
     public StockResponseDTO addStock(StockRequestDTO stockRequestDTO) {

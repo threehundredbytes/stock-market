@@ -23,6 +23,12 @@ public class OrderController {
         return orderService.findAllByAccountId(accountId, jwt.getSubject());
     }
 
+    @GetMapping("/orders/stocks/{stockId}")
+    @PreAuthorize("isAuthenticated()")
+    public List<OrderResponseDTO> findAllByStockId(@PathVariable Long stockId, @AuthenticationPrincipal Jwt jwt) {
+        return orderService.findAllByStockId(stockId, jwt.getSubject());
+    }
+
     @PostMapping("/orders")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)

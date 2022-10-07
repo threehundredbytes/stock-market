@@ -24,6 +24,15 @@ public class AccountController {
         return accountService.findAllByOwnerId(jwt.getSubject());
     }
 
+    @GetMapping("/{accountId}")
+    @PreAuthorize("isAuthenticated()")
+    public AccountResponseDTO findByAccountId(
+            @PathVariable Long accountId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        return accountService.findByAccountId(accountId, jwt.getSubject());
+    }
+
     @GetMapping("/{accountId}/stocks")
     @PreAuthorize("isAuthenticated()")
     public List<StockOnAccountResponseDTO> findAllStocksOnAccount(

@@ -1,4 +1,6 @@
 package ru.dreadblade.stockmarket.accountservice.api.model;
 
-public record StockOnAccountResponseDTO(Long stockId, Long quantity, Long reservedQuantity) {
+import java.time.Instant;
+
+public record StockOnAccountResponseDTO(Long stockId, Long quantity, Long reservedQuantity, Instant purchasedAt) {
 }
