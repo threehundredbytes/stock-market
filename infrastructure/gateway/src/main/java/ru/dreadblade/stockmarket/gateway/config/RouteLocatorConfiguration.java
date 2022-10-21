@@ -34,6 +34,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getAccountService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getAccountService()))
                 )
@@ -44,6 +45,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getNotificationService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getNotificationService()))
                 )
@@ -54,6 +56,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getOrderService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getOrderService()))
                 )
@@ -64,6 +67,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getPaymentService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getPaymentService()))
                 )
@@ -74,6 +78,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getStockPriceHistoryService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getStockPriceHistoryService()))
                 )
@@ -84,6 +89,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getStockService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getStockService()))
                 )
@@ -94,6 +100,7 @@ public class RouteLocatorConfiguration {
                         .filters(f -> f
                                 .removeRequestHeader(COOKIE_HEADER_NAME)
                                 .rewritePath(API_PATH, "")
+                                .circuitBreaker(config -> config.setName(stockMarketServices.getUserService()))
                         )
                         .uri(getLoadBalancerUri(stockMarketServices.getUserService()))
                 ).build();
