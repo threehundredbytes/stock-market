@@ -2,8 +2,8 @@ package ru.dreadblade.stockmarket.userservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.dreadblade.stockmarket.userservice.api.controller.model.Role;
-import ru.dreadblade.stockmarket.userservice.api.controller.model.UserRequestDTO;
+import ru.dreadblade.stockmarket.userservice.api.model.Role;
+import ru.dreadblade.stockmarket.userservice.api.model.UserRequestDTO;
 
 @Service
 @RequiredArgsConstructor

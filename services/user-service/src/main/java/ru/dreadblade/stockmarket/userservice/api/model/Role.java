@@ -1,10 +1,10 @@
-package ru.dreadblade.stockmarket.userservice.api.controller.model;
+package ru.dreadblade.stockmarket.userservice.api.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Role {
     CLIENT("client"),
     BUSINESS("business");

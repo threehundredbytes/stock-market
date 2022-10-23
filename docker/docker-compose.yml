@@ -132,10 +132,12 @@ services:
     ports:
       - "8180:8080"
     restart: on-failure
-    command: start-dev
+    command: ["start-dev", "--import-realm"]
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: password
+    volumes:
+      - ./keycloak/:/opt/keycloak/data/import/
 
 networks:
   stock-market-network:
