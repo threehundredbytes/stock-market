@@ -3,10 +3,7 @@ package ru.dreadblade.stockmarket.orderservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.dreadblade.stockmarket.orderservice.domain.Account;
-import ru.dreadblade.stockmarket.orderservice.domain.Order;
-import ru.dreadblade.stockmarket.orderservice.domain.OrderStatus;
-import ru.dreadblade.stockmarket.orderservice.domain.OrderType;
+import ru.dreadblade.stockmarket.orderservice.domain.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,20 +17,39 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "select o from Order as o " +
                     "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
                     "and o.orderType = '" + OrderType.OrderTypeConstants.SALE_VALUE + "' " +
-                    "and o.stock.id = :stock_id " +
-                    "and o.pricePerStock <= :price " +
+                    "and o.stock = :stock " +
+                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
+                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
                     "and o.currentQuantity > 0 " +
                     "order by o.id asc"
     )
-    List<Order> findConfirmedSaleOrdersByStockIdAndPriceIsLessOrEqualThan(@Param("stock_id") Long stockId, @Param("price") BigDecimal price);
+    List<Order> findConfirmedSaleOrdersByStockAndPriceBetween(@Param("stock") Stock stock,
+                                                              @Param("current_price") BigDecimal currentPrice,
+                                                              @Param("new_price") BigDecimal newPrice);
 
     @Query(
             "select o from Order as o " +
                     "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
                     "and o.orderType = '" + OrderType.OrderTypeConstants.PURCHASE_VALUE + "' " +
-                    "and o.stock.id = :stock_id " +
-                    "and o.pricePerStock >= :price " +
+                    "and o.stock = :stock " +
+                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
+                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
                     "and o.currentQuantity > 0 " +
                     "order by o.id asc")
-    Optional<Order> findConfirmedPurchaseOrderByStockIdAndPriceIsGreaterOrEqualThan(@Param("stock_id") Long stockId, @Param("price") BigDecimal price);
+    Optional<Order> findConfirmedPurchaseOrderByStockAndPriceBetween(@Param("stock") Stock stock,
+                                                                     @Param("current_price") BigDecimal currentPrice,
+                                                                     @Param("new_price") BigDecimal newPrice);
+
+    @Query(
+            "select o from Order as o " +
+                    "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
+                    "and o.orderType = '" + OrderType.OrderTypeConstants.PURCHASE_VALUE + "' " +
+                    "and o.stock = :stock " +
+                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
+                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
+                    "and o.currentQuantity > 0 " +
+                    "order by o.id asc")
+    List<Order> findConfirmedPurchaseOrdersByStockAndPriceBetween(@Param("stock") Stock stock,
+                                                                  @Param("current_price") BigDecimal currentPrice,
+                                                                  @Param("new_price") BigDecimal newPrice);
 }

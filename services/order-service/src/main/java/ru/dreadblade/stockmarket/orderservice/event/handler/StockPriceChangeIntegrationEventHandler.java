@@ -2,27 +2,35 @@ package ru.dreadblade.stockmarket.orderservice.event.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.orderservice.domain.Order;
 import ru.dreadblade.stockmarket.orderservice.domain.OrderStatus;
+import ru.dreadblade.stockmarket.orderservice.domain.Stock;
 import ru.dreadblade.stockmarket.orderservice.event.OrderClosedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.event.StockPriceChangeIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
+import ru.dreadblade.stockmarket.orderservice.repository.StockRepository;
 import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 import ru.dreadblade.stockmarket.shared.event.handler.IntegrationEventHandler;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class StockPriceChangeIntegrationEventHandler implements IntegrationEventHandler<StockPriceChangeIntegrationEvent> {
     private final OrderRepository orderRepository;
+    private final StockRepository stockRepository;
     private final KafkaTopics kafkaTopics;
     private final EventBus eventBus;
+
+    @Value("${app.order.imitate-trading}")
+    private Boolean isImitatingTrading;
 
     @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.stock-price-change}")
     @Override
@@ -30,38 +38,64 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
         log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
                 integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
-        Long stockId = integrationEvent.getStockId();
-        BigDecimal currentStockPrice = integrationEvent.getNewPrice();
+        Stock stock = stockRepository.findById(integrationEvent.getStockId())
+                .orElseThrow(IllegalStateException::new);
 
-        orderRepository.findConfirmedSaleOrdersByStockIdAndPriceIsLessOrEqualThan(stockId, currentStockPrice).forEach(orderForSale -> {
-            while (orderForSale.getCurrentQuantity() > 0) {
-                var optionalOrderForPurchase = orderRepository
-                        .findConfirmedPurchaseOrderByStockIdAndPriceIsGreaterOrEqualThan(stockId, orderForSale.getPricePerStock());
+        BigDecimal currentStockPrice = stock.getPrice();
+        BigDecimal newStockPrice = integrationEvent.getNewPrice();
 
-                if (optionalOrderForPurchase.isEmpty()) {
-                    break;
+        stock.setPrice(newStockPrice);
+        stockRepository.save(stock);
+
+        List<Order> confirmedSaleOrders = orderRepository.findConfirmedSaleOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
+
+        if (confirmedSaleOrders.size() > 0) {
+            confirmedSaleOrders.forEach(orderForSale -> {
+                while (orderForSale.getCurrentQuantity() > 0) {
+                    var optionalOrderForPurchase = orderRepository
+                            .findConfirmedPurchaseOrderByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
+
+                    if (optionalOrderForPurchase.isEmpty()) {
+                        break;
+                    }
+
+                    var orderForPurchase = optionalOrderForPurchase.get();
+                    long quantity = Math.min(orderForSale.getCurrentQuantity(), orderForPurchase.getCurrentQuantity());
+
+                    Instant now = Instant.now();
+
+                    orderForPurchase.setCurrentQuantity(orderForPurchase.getCurrentQuantity() + quantity);
+                    orderForSale.setCurrentQuantity(orderForSale.getCurrentQuantity() - quantity);
+
+                    if (orderForPurchase.getCurrentQuantity() == 0) {
+                        closeOrder(orderForPurchase, now);
+                    }
+
+                    if (orderForSale.getCurrentQuantity() == 0) {
+                        closeOrder(orderForSale, now);
+                    }
+
+                    orderRepository.save(orderForPurchase);
+                    orderRepository.save(orderForSale);
                 }
+            });
+        }
 
-                var orderForPurchase = optionalOrderForPurchase.get();
-                long quantity = Math.min(orderForSale.getCurrentQuantity(), orderForPurchase.getCurrentQuantity());
+        if (isImitatingTrading) {
+            orderRepository.findConfirmedSaleOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice)
+                    .forEach(order -> {
+                        order.setCurrentQuantity(0L);
+                        closeOrder(order, Instant.now());
+                        orderRepository.save(order);
+                    });
 
-                Instant now = Instant.now();
-
-                orderForPurchase.setCurrentQuantity(orderForPurchase.getCurrentQuantity() - quantity);
-                orderForSale.setCurrentQuantity(orderForSale.getCurrentQuantity() - quantity);
-
-                if (orderForPurchase.getCurrentQuantity() == 0) {
-                    closeOrder(orderForPurchase, now);
-                }
-
-                if (orderForSale.getCurrentQuantity() == 0) {
-                    closeOrder(orderForSale, now);
-                }
-
-                orderRepository.save(orderForPurchase);
-                orderRepository.save(orderForSale);
-            }
-        });
+            orderRepository.findConfirmedPurchaseOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice)
+                    .forEach(order -> {
+                        order.setCurrentQuantity(order.getInitialQuantity());
+                        closeOrder(order, Instant.now());
+                        orderRepository.save(order);
+                    });
+        }
     }
 
     private void closeOrder(Order order, Instant closedAt) {

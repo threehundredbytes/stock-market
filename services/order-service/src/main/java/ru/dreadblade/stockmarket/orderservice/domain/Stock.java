@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -15,4 +16,5 @@ public class Stock {
     @Id
     private Long id;
     private String ticker;
+    private BigDecimal price;
 }

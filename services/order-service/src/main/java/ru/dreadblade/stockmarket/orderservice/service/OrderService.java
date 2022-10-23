@@ -10,6 +10,7 @@ import ru.dreadblade.stockmarket.orderservice.api.model.OrderResponseDTO;
 import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
 import ru.dreadblade.stockmarket.orderservice.domain.Account;
 import ru.dreadblade.stockmarket.orderservice.domain.Order;
+import ru.dreadblade.stockmarket.orderservice.domain.OrderType;
 import ru.dreadblade.stockmarket.orderservice.domain.Stock;
 import ru.dreadblade.stockmarket.orderservice.event.OrderCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.repository.AccountRepository;
@@ -17,6 +18,7 @@ import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
 import ru.dreadblade.stockmarket.orderservice.repository.StockRepository;
 import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -61,12 +63,18 @@ public class OrderService {
         Stock stock = stockRepository.findById(requestDTO.stockId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        Long currentQuantity = 0L;
+
+        if (requestDTO.orderType() == OrderType.SALE) {
+            currentQuantity = requestDTO.quantity();
+        }
+
         Order order = Order.builder()
                 .stock(stock)
                 .account(account)
                 .pricePerStock(requestDTO.pricePerStock())
                 .initialQuantity(requestDTO.quantity())
-                .currentQuantity(requestDTO.quantity())
+                .currentQuantity(currentQuantity)
                 .orderType(requestDTO.orderType())
                 .build();
 

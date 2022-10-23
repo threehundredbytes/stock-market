@@ -24,6 +24,7 @@ public class StockCreatedIntegrationEventHandler implements IntegrationEventHand
         Stock stock = Stock.builder()
                 .id(integrationEvent.getStockId())
                 .ticker(integrationEvent.getStockTicker())
+                .price(integrationEvent.getStockPrice())
                 .build();
 
         stockRepository.save(stock);
