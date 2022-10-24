@@ -139,6 +139,17 @@ services:
     volumes:
       - ./keycloak/:/opt/keycloak/data/import/
 
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: zipkin
+    networks:
+      - stock-market-network
+    ports:
+      - "9411:9411"
+    restart: on-failure
+    environment:
+      STORAGE_TYPE: mem
+
 networks:
   stock-market-network:
     driver: bridge

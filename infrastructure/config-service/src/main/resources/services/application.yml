@@ -33,6 +33,15 @@ app:
     username: service
     password: '{cipher}a384013b4ba6dd92bd9cdae9c82321eddadb3d99400bb58e355e154fdb7b2824'
 
+spring:
+  sleuth:
+    enabled: true
+    traceId128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+
 eureka:
   instance:
     prefer-ip-address: false
