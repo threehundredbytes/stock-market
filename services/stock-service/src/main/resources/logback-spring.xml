@@ -4,6 +4,7 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <springProperty scope="context" name="applicationName" source="spring.application.name"/>
+    <springProperty scope="context" name="springProfilesActive" source="spring.profiles.active"/>
     <springProperty scope="context" name="logstashHost" source="app.logstash.host"/>
     <springProperty scope="context" name="logstashPort" source="app.logstash.port"/>
 
@@ -18,54 +19,56 @@
         <appender-ref ref="console"/>
     </root>
 
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <keepAliveDuration>5 minutes</keepAliveDuration>
-        <reconnectionDelay>10 second</reconnectionDelay>
-        <destination>${logstashHost}:${logstashPort}</destination>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>WARN</level>
-        </filter>
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp/>
-                <mdc/>
-                <context/>
-                <logLevel/>
-                <loggerName/>
-                <pattern>
+    <springProfile name="elk">
+        <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <param name="Encoding" value="UTF-8"/>
+            <keepAliveDuration>5 minutes</keepAliveDuration>
+            <reconnectionDelay>10 second</reconnectionDelay>
+            <destination>${logstashHost}:${logstashPort}</destination>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>WARN</level>
+            </filter>
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp/>
+                    <mdc/>
+                    <context/>
+                    <logLevel/>
+                    <loggerName/>
                     <pattern>
-                        {
-                        "applicationName": "${applicationName}",
-                        "trace": "%X{traceId:-}",
-                        "span": "%X{spanId:-}",
-                        "pid": "${PID:-}"
-                        }
+                        <pattern>
+                            {
+                            "applicationName": "${applicationName}",
+                            "springProfilesActive": "${springProfilesActive}",
+                            "trace": "%X{traceId:-}",
+                            "span": "%X{spanId:-}",
+                            "pid": "${PID:-}"
+                            }
+                        </pattern>
                     </pattern>
-                </pattern>
-                <threadName/>
-                <message/>
-                <logstashMarkers/>
-                <arguments/>
-                <stackTrace>
-                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
-                        <exclude>net\.sf\.cglib\..*</exclude>
-                        <exclude>org\.apache\.coyote\..*</exclude>
-                        <exclude>org\.apache\.catalina\..*</exclude>
-                        <exclude>org\.apache\.tomcat\..*</exclude>
-                        <exclude>org\.springframework\.web\.servlet\..*</exclude>
-                        <exclude>^sun\.reflect\..*\.invoke</exclude>
-                        <maxDepthPerThrowable>30</maxDepthPerThrowable>
-                        <rootCauseFirst>true</rootCauseFirst>
-                        <maxLength>2048</maxLength>
-                    </throwableConverter>
-                </stackTrace>
-            </providers>
-        </encoder>
-    </appender>
+                    <threadName/>
+                    <message/>
+                    <logstashMarkers/>
+                    <arguments/>
+                    <stackTrace>
+                        <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                            <exclude>net\.sf\.cglib\..*</exclude>
+                            <exclude>org\.apache\.coyote\..*</exclude>
+                            <exclude>org\.apache\.catalina\..*</exclude>
+                            <exclude>org\.apache\.tomcat\..*</exclude>
+                            <exclude>org\.springframework\.web\.servlet\..*</exclude>
+                            <exclude>^sun\.reflect\..*\.invoke</exclude>
+                            <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                            <rootCauseFirst>true</rootCauseFirst>
+                            <maxLength>2048</maxLength>
+                        </throwableConverter>
+                    </stackTrace>
+                </providers>
+            </encoder>
+        </appender>
 
-    <root level="WARN">
-        <appender-ref ref="logstash"/>
-    </root>
-
+        <root level="WARN">
+            <appender-ref ref="logstash"/>
+        </root>
+    </springProfile>
 </configuration>
