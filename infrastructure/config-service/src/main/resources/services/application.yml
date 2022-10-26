@@ -46,14 +46,8 @@ spring:
       auto-offset-reset: earliest
       properties:
         isolation.level: read_committed
-  sleuth:
-    enabled: true
-    traceId128: true
-    sampler:
-      probability: 1.0
-  zipkin:
-    enabled: true
-    sender.type: kafka
+  sleuth.enabled: false
+  zipkin.enabled: false
 
 eureka:
   instance:
@@ -66,3 +60,18 @@ eureka:
       defaultZone: ${app.eureka.protocol}://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
     healthcheck:
       enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: distributed-tracing
+
+  sleuth:
+    enabled: true
+    traceId128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    sender.type: kafka

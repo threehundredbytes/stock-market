@@ -139,20 +139,6 @@ services:
     volumes:
       - ./keycloak/:/opt/keycloak/data/import/
 
-  zipkin:
-    image: openzipkin/zipkin:2
-    container_name: zipkin
-    networks:
-      - stock-market-network
-    ports:
-      - "9411:9411"
-    restart: on-failure
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      JAVA_OPTS: -Xms256m -Xmx256m
-    depends_on:
-      - kafka
-
   elasticsearch:
     image: elasticsearch:8.4.3
     container_name: elasticsearch
