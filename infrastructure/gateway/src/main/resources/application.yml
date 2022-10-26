@@ -21,5 +21,8 @@ spring:
 
 logging:
   level:
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.security: TRACE
+    root: INFO
+    org.springframework:
+      cloud.gateway: TRACE
+      cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+      security: TRACE

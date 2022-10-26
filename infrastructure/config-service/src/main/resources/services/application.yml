@@ -32,8 +32,20 @@ app:
     port: 8761
     username: service
     password: '{cipher}a384013b4ba6dd92bd9cdae9c82321eddadb3d99400bb58e355e154fdb7b2824'
+  logstash:
+    host: localhost
+    port: 5000
 
 spring:
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
   sleuth:
     enabled: true
     traceId128: true
@@ -41,6 +53,7 @@ spring:
       probability: 1.0
   zipkin:
     enabled: true
+    sender.type: kafka
 
 eureka:
   instance:

@@ -12,12 +12,3 @@ spring:
     host: ${app.redis.host}
     port: ${app.redis.port}
     password: ${app.redis.password}
-  kafka:
-    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
-    producer:
-      properties:
-        spring.json.add.type.headers: false
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        isolation.level: read_committed

@@ -18,3 +18,7 @@ spring:
       fail-fast: true
       username: ${app.config-service.username}
       password: ${app.config-service.password}
+
+logging:
+  level:
+    root: INFO

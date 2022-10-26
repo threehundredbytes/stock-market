@@ -21,5 +21,4 @@ spring:
 
 logging:
   level:
-    ru.dreadblade.stockmarket.notificationservice: TRACE
-    org.springframework.messaging: TRACE
+    root: INFO

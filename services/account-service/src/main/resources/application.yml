@@ -21,4 +21,4 @@ spring:
 
 logging:
   level:
-    ru.dreadblade.stockmarket.accountservice: TRACE
+    root: INFO

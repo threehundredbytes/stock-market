@@ -12,6 +12,9 @@ app:
   kafka:
     host: localhost
     port: 9092
+  logstash:
+    host: localhost
+    port: 5000
 
 encrypt:
   key: dev-only-password
@@ -34,3 +37,7 @@ management:
     web:
       exposure:
         include: busrefresh
+
+logging:
+  level:
+    root: INFO

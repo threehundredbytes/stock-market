@@ -35,11 +35,9 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
     @KafkaListener(groupId = "${app.kafka.consumer.group}", topics = "${app.kafka.topic.stock-price-change}")
     @Override
     public void handleIntegrationEvent(StockPriceChangeIntegrationEvent integrationEvent) {
-        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(),
-                integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
+        log.trace("Handling integration event: {} ({}): {}", integrationEvent.getId().toString(), integrationEvent.getClass().getSimpleName(), integrationEvent.getCreatedAt().toString());
 
-        Stock stock = stockRepository.findById(integrationEvent.getStockId())
-                .orElseThrow(IllegalStateException::new);
+        Stock stock = stockRepository.findById(integrationEvent.getStockId()).orElseThrow(IllegalStateException::new);
 
         BigDecimal currentStockPrice = stock.getPrice();
         BigDecimal newStockPrice = integrationEvent.getNewPrice();
@@ -49,52 +47,65 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
 
         List<Order> confirmedSaleOrders = orderRepository.findConfirmedSaleOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
 
-        if (confirmedSaleOrders.size() > 0) {
+        if (!confirmedSaleOrders.isEmpty()) {
             confirmedSaleOrders.forEach(orderForSale -> {
                 while (orderForSale.getCurrentQuantity() > 0) {
-                    var optionalOrderForPurchase = orderRepository
-                            .findConfirmedPurchaseOrderByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
+                    List<Order> ordersForPurchase = orderRepository.findConfirmedPurchaseOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
 
-                    if (optionalOrderForPurchase.isEmpty()) {
+                    if (ordersForPurchase.isEmpty()) {
                         break;
                     }
 
-                    var orderForPurchase = optionalOrderForPurchase.get();
-                    long quantity = Math.min(orderForSale.getCurrentQuantity(), orderForPurchase.getCurrentQuantity());
+                    ordersForPurchase.forEach(orderForPurchase -> {
+                        while (orderForPurchase.getCurrentQuantity() > 0) {
+                            long quantity = Math.min(orderForSale.getCurrentQuantity(), orderForPurchase.getCurrentQuantity());
 
-                    Instant now = Instant.now();
+                            Instant now = Instant.now();
 
-                    orderForPurchase.setCurrentQuantity(orderForPurchase.getCurrentQuantity() + quantity);
-                    orderForSale.setCurrentQuantity(orderForSale.getCurrentQuantity() - quantity);
+                            orderForPurchase.setCurrentQuantity(orderForPurchase.getCurrentQuantity() + quantity);
+                            orderForSale.setCurrentQuantity(orderForSale.getCurrentQuantity() - quantity);
 
-                    if (orderForPurchase.getCurrentQuantity() == 0) {
-                        closeOrder(orderForPurchase, now);
-                    }
+                            if (orderForPurchase.getCurrentQuantity() == 0) {
+                                closeOrder(orderForPurchase, now);
+                            }
 
-                    if (orderForSale.getCurrentQuantity() == 0) {
-                        closeOrder(orderForSale, now);
-                    }
+                            if (orderForSale.getCurrentQuantity() == 0) {
+                                closeOrder(orderForSale, now);
+                            }
 
-                    orderRepository.save(orderForPurchase);
-                    orderRepository.save(orderForSale);
+                            orderRepository.save(orderForPurchase);
+                            orderRepository.save(orderForSale);
+                        }
+                    });
                 }
             });
         }
 
-        if (isImitatingTrading) {
-            orderRepository.findConfirmedSaleOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice)
-                    .forEach(order -> {
-                        order.setCurrentQuantity(0L);
-                        closeOrder(order, Instant.now());
-                        orderRepository.save(order);
-                    });
 
-            orderRepository.findConfirmedPurchaseOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice)
-                    .forEach(order -> {
-                        order.setCurrentQuantity(order.getInitialQuantity());
-                        closeOrder(order, Instant.now());
-                        orderRepository.save(order);
-                    });
+        if (isImitatingTrading) {
+            List<Order> confirmedSaleOrdersToClose = orderRepository.findConfirmedSaleOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
+
+            if (!confirmedSaleOrdersToClose.isEmpty()) {
+                log.info("Closing {} sale orders automatically", confirmedSaleOrdersToClose.size());
+
+                confirmedSaleOrdersToClose.forEach(order -> {
+                    order.setCurrentQuantity(0L);
+                    closeOrder(order, Instant.now());
+                    orderRepository.save(order);
+                });
+            }
+
+            List<Order> confirmedPurchaseOrdersToClose = orderRepository.findConfirmedPurchaseOrdersByStockAndPriceBetween(stock, currentStockPrice, newStockPrice);
+
+            if (!confirmedPurchaseOrdersToClose.isEmpty()) {
+                log.info("Closing {} purchase orders automatically", confirmedPurchaseOrdersToClose.size());
+
+                confirmedPurchaseOrdersToClose.forEach(order -> {
+                    order.setCurrentQuantity(order.getInitialQuantity());
+                    closeOrder(order, Instant.now());
+                    orderRepository.save(order);
+                });
+            }
         }
     }
 
@@ -102,15 +113,7 @@ public class StockPriceChangeIntegrationEventHandler implements IntegrationEvent
         order.setOrderStatus(OrderStatus.CLOSED);
         order.setClosedAt(closedAt);
 
-        var orderClosedIntegrationEvent = OrderClosedIntegrationEvent.builder()
-                .accountId(order.getAccount().getId())
-                .stockId(order.getStock().getId())
-                .stockTicker(order.getStock().getTicker())
-                .pricePerStock(order.getPricePerStock())
-                .quantity(order.getInitialQuantity())
-                .orderType(order.getOrderType())
-                .userId(order.getAccount().getOwnerId())
-                .build();
+        var orderClosedIntegrationEvent = OrderClosedIntegrationEvent.builder().accountId(order.getAccount().getId()).stockId(order.getStock().getId()).stockTicker(order.getStock().getTicker()).pricePerStock(order.getPricePerStock()).quantity(order.getInitialQuantity()).orderType(order.getOrderType()).userId(order.getAccount().getOwnerId()).build();
 
         eventBus.publish(kafkaTopics.getOrderClosed(), orderClosedIntegrationEvent);
     }

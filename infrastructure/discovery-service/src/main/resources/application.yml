@@ -18,3 +18,10 @@ spring:
       fail-fast: true
       username: ${app.config-service.username}
       password: ${app.config-service.password}
+
+logging:
+  level:
+    org.springframework: INFO
+    com.netflix:
+      eureka: INFO
+      discovery: INFO

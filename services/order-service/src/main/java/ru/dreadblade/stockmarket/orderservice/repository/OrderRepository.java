@@ -7,7 +7,6 @@ import ru.dreadblade.stockmarket.orderservice.domain.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByAccount(Account account);
@@ -26,19 +25,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findConfirmedSaleOrdersByStockAndPriceBetween(@Param("stock") Stock stock,
                                                               @Param("current_price") BigDecimal currentPrice,
                                                               @Param("new_price") BigDecimal newPrice);
-
-    @Query(
-            "select o from Order as o " +
-                    "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
-                    "and o.orderType = '" + OrderType.OrderTypeConstants.PURCHASE_VALUE + "' " +
-                    "and o.stock = :stock " +
-                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
-                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
-                    "and o.currentQuantity > 0 " +
-                    "order by o.id asc")
-    Optional<Order> findConfirmedPurchaseOrderByStockAndPriceBetween(@Param("stock") Stock stock,
-                                                                     @Param("current_price") BigDecimal currentPrice,
-                                                                     @Param("new_price") BigDecimal newPrice);
 
     @Query(
             "select o from Order as o " +

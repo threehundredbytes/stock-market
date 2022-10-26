@@ -19,9 +19,3 @@ spring:
       username: ${app.mongodb.username}
       password: ${app.mongodb.password}
       authentication-database: ${app.mongodb.authentication-database}
-  kafka:
-    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        isolation.level: read_committed
