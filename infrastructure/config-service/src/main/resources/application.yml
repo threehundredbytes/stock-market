@@ -27,6 +27,7 @@ spring:
       server:
         git:
           uri: https://github.com/Dreadblade-dev/stock-market-configuration
+          default-label: master
         native:
           search-locations: classpath:/services
   kafka:
