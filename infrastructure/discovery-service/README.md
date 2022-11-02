@@ -12,4 +12,5 @@ Also, after you build this service, you can run it with the following command:
     ~ java -jar infrastructure/discovery-service/target/discovery-service.jar
 
 Optional profiles:
-1. **elk** - to enable log shipping to Logstash (ELK-stack)
+1. **elk** - to enable log shipping to [Logstash](https://www.elastic.co/logstash/) 
+   ([ELK-stack](https://www.elastic.co/what-is/elk-stack))

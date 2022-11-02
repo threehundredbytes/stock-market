@@ -33,6 +33,8 @@ This is Spring Cloud microservices demo project. Here you can find examples of:
   A microservice that store the stock price history.
 - [stock-price-service](services/stock-price-service) - A microservice that
   randomly changes stock prices.
+- [stock-service](services/stock-service) - A microservice responsible for
+  creating new stocks and receiving existing ones.
 - [user-service](services/user-service) - A microservice responsible for creating
   users with specific roles via Keycloak API.
 

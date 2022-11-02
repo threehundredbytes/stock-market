@@ -37,4 +37,5 @@ Also, after you build this service, you can run it with the following command:
 
 Optional profiles:
 1. **native** - to load configuration from [classpath:/services](src/main/resources/services)
-2. **elk** - to enable log shipping to Logstash (ELK-stack)
+2. **elk** - to enable log shipping to [Logstash](https://www.elastic.co/logstash/)
+   ([ELK-stack](https://www.elastic.co/what-is/elk-stack))
