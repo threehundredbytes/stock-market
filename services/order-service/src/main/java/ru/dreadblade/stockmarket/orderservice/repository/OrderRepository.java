@@ -17,9 +17,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
                     "and o.orderType = '" + OrderType.OrderTypeConstants.SALE_VALUE + "' " +
                     "and o.stock = :stock " +
-                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
-                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
-                    "and o.currentQuantity > 0 " +
+                    "and ((o.pricePerStock >= :current_price and o.pricePerStock <= :new_price) " +
+                    "or (o.pricePerStock >= :new_price and o.pricePerStock <= :current_price)) " +
                     "order by o.id asc"
     )
     List<Order> findConfirmedSaleOrdersByStockAndPriceBetween(@Param("stock") Stock stock,
@@ -31,9 +30,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     "where o.orderStatus = '" + OrderStatus.OrderStatusConstants.CONFIRMED_VALUE + "' " +
                     "and o.orderType = '" + OrderType.OrderTypeConstants.PURCHASE_VALUE + "' " +
                     "and o.stock = :stock " +
-                    "and o.pricePerStock >= :current_price and o.pricePerStock <= :new_price " +
-                    "or o.pricePerStock >= :new_price and o.pricePerStock <= :current_price " +
-                    "and o.currentQuantity > 0 " +
+                    "and ((o.pricePerStock >= :current_price and o.pricePerStock <= :new_price) " +
+                    "or (o.pricePerStock >= :new_price and o.pricePerStock <= :current_price)) " +
                     "order by o.id asc")
     List<Order> findConfirmedPurchaseOrdersByStockAndPriceBetween(@Param("stock") Stock stock,
                                                                   @Param("current_price") BigDecimal currentPrice,

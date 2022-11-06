@@ -8,17 +8,15 @@ import ru.dreadblade.stockmarket.orderservice.api.mapper.OrderMapper;
 import ru.dreadblade.stockmarket.orderservice.api.model.OrderRequestDTO;
 import ru.dreadblade.stockmarket.orderservice.api.model.OrderResponseDTO;
 import ru.dreadblade.stockmarket.orderservice.config.KafkaTopics;
-import ru.dreadblade.stockmarket.orderservice.domain.Account;
-import ru.dreadblade.stockmarket.orderservice.domain.Order;
-import ru.dreadblade.stockmarket.orderservice.domain.OrderType;
-import ru.dreadblade.stockmarket.orderservice.domain.Stock;
+import ru.dreadblade.stockmarket.orderservice.domain.*;
+import ru.dreadblade.stockmarket.orderservice.event.OrderClosedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.event.OrderCreatedIntegrationEvent;
 import ru.dreadblade.stockmarket.orderservice.repository.AccountRepository;
 import ru.dreadblade.stockmarket.orderservice.repository.OrderRepository;
 import ru.dreadblade.stockmarket.orderservice.repository.StockRepository;
 import ru.dreadblade.stockmarket.shared.event.bus.EventBus;
 
-import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -93,5 +91,22 @@ public class OrderService {
         eventBus.publish(kafkaTopics.getOrderCreated(), orderCreatedIntegrationEvent);
 
         return orderMapper.mapEntityToResponseDTO(order);
+    }
+
+    public void closeOrder(Order order, Instant closedAt) {
+        order.setOrderStatus(OrderStatus.CLOSED);
+        order.setClosedAt(closedAt);
+
+        var orderClosedIntegrationEvent = OrderClosedIntegrationEvent.builder()
+                .accountId(order.getAccount().getId())
+                .stockId(order.getStock().getId())
+                .stockTicker(order.getStock().getTicker())
+                .pricePerStock(order.getPricePerStock())
+                .quantity(order.getInitialQuantity())
+                .orderType(order.getOrderType())
+                .userId(order.getAccount().getOwnerId())
+                .build();
+
+        eventBus.publish(kafkaTopics.getOrderClosed(), orderClosedIntegrationEvent);
     }
 }

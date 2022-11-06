@@ -35,10 +35,12 @@ To access these endpoints you need to run the [gateway](../../infrastructure/gat
 You can run this service with your favorite IDE like Intellij Idea or Eclipse.
 Also, after you build this service, you can run it with the following command:
 
-    ~ java -jar services/order-service/target/order-service.jar
+    ~ java -Dspring.profiles.active=simulate-trading -jar services/order-service/target/order-service.jar
 
 Optional profiles:
-1. **elk** - to enable log shipping to [Logstash](https://www.elastic.co/logstash/) ([ELK-stack](https://www.elastic.co/what-is/elk-stack))
-2. **distributed-tracing** - to enable distributed tracing with
+1. **simulate-trading** - to enable trading simulation (stock-market will
+   automatically close all remaining orders, even if there are no opposite orders)
+2. **elk** - to enable log shipping to [Logstash](https://www.elastic.co/logstash/) ([ELK-stack](https://www.elastic.co/what-is/elk-stack))
+3. **distributed-tracing** - to enable distributed tracing with
    [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth)
    and [Zipkin](https://zipkin.io/)
