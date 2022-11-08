@@ -1,0 +1,26 @@
+app:
+  kafka:
+    consumer:
+      group: stock-service-group
+  postgresql:
+    host: localhost
+    port: 5432
+    database: stock_service
+    username: '{cipher}53efb840f68c8473e8f82689644285e5904c30f8a64276d822eeef2d2c9e0c6e4314e3564aaacb14c31a14fd91f4dfea'
+    password: '{cipher}039f521905cb0196f7390e311edad85907ad99d125e520d7b43bb44b67bbdd45'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${app.postgresql.host}:${app.postgresql.port}/${app.postgresql.database}
+    username: ${app.postgresql.username}
+    password: ${app.postgresql.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.auth-server.issuer-uri}
+          jwk-set-uri: ${app.auth-server.jwk-set-uri}

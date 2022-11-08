@@ -1,0 +1,20 @@
+version: '3.9'
+name: stock-market
+services:
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: zipkin
+    networks:
+      - stock-market-network
+    ports:
+      - "9411:9411"
+    restart: on-failure
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      JAVA_OPTS: -Xms256m -Xmx256m
+    depends_on:
+      - kafka
+
+networks:
+  stock-market-network:
+    name: stock-market-network

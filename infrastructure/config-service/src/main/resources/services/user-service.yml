@@ -1,0 +1,18 @@
+app:
+  auth-server:
+    protocol: http
+    host: localhost
+    port: 8180
+    realm: stock-market
+    issuer-uri: ${app.auth-server.protocol}://${app.auth-server.host}:${app.auth-server.port}/realms/${app.auth-server.realm}
+    jwk-set-uri: ${app.auth-server.issuer.uri}/protocol/openid-connect/certs
+    client:
+      frontend:
+        id: stock-market-frontend
+      backend:
+        id: stock-market-backend
+        secret: '{cipher}b9d0a5ed9559a2502f6945f3c599e087ae140b0dc105fc8b0646194390f29ada'
+
+spring:
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}

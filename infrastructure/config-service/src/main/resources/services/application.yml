@@ -1,0 +1,77 @@
+app:
+  client:
+    stock-market-ng-app:
+      uri: http://localhost:4200
+  auth-server:
+    protocol: http
+    host: localhost
+    port: 8180
+    realm: stock-market
+    issuer-uri: ${app.auth-server.protocol}://${app.auth-server.host}:${app.auth-server.port}/realms/${app.auth-server.realm}
+    jwk-set-uri: ${app.auth-server.issuer-uri}/protocol/openid-connect/certs
+  security:
+    jwt:
+      attribute:
+        username: preferred_username
+        roles: roles
+  kafka:
+    host: localhost
+    port: 9092
+    topic:
+      account-created: account-created
+      order-closed: order-closed
+      order-confirmed: order-confirmed
+      order-created: order-created
+      order-rejected: order-rejected
+      payment-created: payment-created
+      stock-created: stock-created
+      stock-price-change: stock-price-change
+  eureka:
+    protocol: http
+    host: localhost
+    port: 8761
+    username: service
+    password: '{cipher}a384013b4ba6dd92bd9cdae9c82321eddadb3d99400bb58e355e154fdb7b2824'
+  logstash:
+    host: localhost
+    port: 5000
+
+spring:
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        isolation.level: read_committed
+  sleuth.enabled: false
+  zipkin.enabled: false
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${random.uuid}
+    hostname: ${app.eureka.host}
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: ${app.eureka.protocol}://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
+    healthcheck:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: distributed-tracing
+
+  sleuth:
+    enabled: true
+    traceId128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    sender.type: kafka

@@ -1,0 +1,144 @@
+version: '3.9'
+name: stock-market
+services:
+  zookeeper:
+    image: zookeeper:3.8.0-temurin
+    container_name: zookeeper
+    networks:
+      - stock-market-network
+    restart: on-failure
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: bitnami/kafka:3.2
+    container_name: kafka
+    hostname: kafka
+    networks:
+      - stock-market-network
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    restart: on-failure
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: yes
+      JMX_PORT: 9997
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper
+
+  account-service-postgresql:
+    image: postgres:14
+    container_name: account-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5433:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: account_service
+      POSTGRES_USER: account_service_db_user
+      POSTGRES_PASSWORD: password
+
+  notification-service-postgresql:
+    image: postgres:14
+    container_name: notification-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5436:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: notification_service
+      POSTGRES_USER: notification_service_db_user
+      POSTGRES_PASSWORD: password
+
+  order-service-postgresql:
+    image: postgres:14
+    container_name: order-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5434:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: order_service
+      POSTGRES_USER: order_service_db_user
+      POSTGRES_PASSWORD: password
+
+  payment-service-postgresql:
+    image: postgres:14
+    container_name: payment-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5435:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: payment_service
+      POSTGRES_USER: payment_service_db_user
+      POSTGRES_PASSWORD: password
+
+  stock-price-history-service-mongodb:
+    image: mongo:5
+    container_name: stock-price-history-service-mongodb
+    networks:
+      - stock-market-network
+    ports:
+      - "27017:27017"
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: stockPriceHistoryServiceDatabaseUser
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: stockPriceHistoryServiceDB
+
+  stock-price-service-redis:
+    image: redis:7
+    container_name: stock-price-service-redis
+    networks:
+      - stock-market-network
+    ports:
+      - "6379:6379"
+    restart: on-failure
+    environment:
+      REDIS_PASSWORD: password
+
+  stock-service-postgresql:
+    image: postgres:14
+    container_name: stock-service-postgresql
+    networks:
+      - stock-market-network
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: stock_service
+      POSTGRES_USER: stock_service_db_user
+      POSTGRES_PASSWORD: password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.0
+    container_name: keycloak
+    networks:
+      - stock-market-network
+    ports:
+      - "8180:8080"
+    restart: on-failure
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    volumes:
+      - ./keycloak/:/opt/keycloak/data/import/
+
+networks:
+  stock-market-network:
+    driver: bridge

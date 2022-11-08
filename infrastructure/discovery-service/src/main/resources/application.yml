@@ -1,0 +1,27 @@
+server:
+  port: 8761
+
+app:
+  config-service:
+    url: http://localhost:8888
+    username: user
+    password: password
+
+spring:
+  application:
+    name: discovery-service
+  config:
+    import: configserver:${app.config-service.url}
+  cloud:
+    config:
+      uri: ${app.config-service.url}
+      fail-fast: true
+      username: ${app.config-service.username}
+      password: ${app.config-service.password}
+
+logging:
+  level:
+    org.springframework: INFO
+    com.netflix:
+      eureka: INFO
+      discovery: INFO

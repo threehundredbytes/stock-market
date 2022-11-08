@@ -1,0 +1,20 @@
+app:
+  kafka:
+    consumer:
+      group: payment-service-group
+  postgresql:
+    host: localhost
+    port: 5435
+    database: payment_service
+    username: '{cipher}823fd9e97b4057d5fb478e27f93a51e2e20917e19340ac218f109233f71def8a8ea5d006bab45b8f68ba9069e1066642'
+    password: '{cipher}cf98b9c746fca68f2d47f221698874ede7d0f9f375feff754e3db6478d0988ca'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${app.postgresql.host}:${app.postgresql.port}/${app.postgresql.database}
+    username: ${app.postgresql.username}
+    password: ${app.postgresql.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update

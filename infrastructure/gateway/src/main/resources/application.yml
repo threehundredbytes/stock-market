@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+app:
+  config-service:
+    url: http://localhost:8888
+    username: user
+    password: password
+
+spring:
+  application:
+    name: gateway
+  config:
+    import: configserver:${app.config-service.url}
+  cloud:
+    config:
+      uri: ${app.config-service.url}
+      fail-fast: true
+      username: ${app.config-service.username}
+      password: ${app.config-service.password}
+
+logging:
+  level:
+    root: INFO
+    org.springframework:
+      cloud.gateway: TRACE
+      cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+      security: TRACE
