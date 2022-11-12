@@ -11,6 +11,9 @@ This is Spring Cloud microservices demo project. Here you can find examples of:
 - ELK stack using logstash-logback-encoder
 - Docker
 
+# Architectural diagram
+![Architectural diagram](docs/architectural-diagram.jpg)
+
 # Services
 - [config-service](infrastructure/config-service) - Centralized configuration
   service. You can access this service at http://localhost:8888 with credentials
